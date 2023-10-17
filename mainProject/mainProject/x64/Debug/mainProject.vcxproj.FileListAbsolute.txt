@@ -1,0 +1,4 @@
+D:\курсовий\Hospital\mainProject\mainProject\x64\Debug\mainProject.vcxproj.AssemblyReference.cache
+D:\курсовий\Hospital\mainProject\mainProject\x64\Debug\mainProject.vcxproj.SuggestedBindingRedirects.cache
+D:\курсовий\Hospital\mainProject\mainProject\x64\Debug\mainProject.MyForm.resources
+D:\курсовий\Hospital\mainProject\mainProject\x64\Debug\mainProject.vcxproj.GenerateResource.cache
