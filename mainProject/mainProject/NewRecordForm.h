@@ -302,7 +302,7 @@ namespace mainProject {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(12, 546);
+			this->button1->Location = System::Drawing::Point(12, 557);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(202, 35);
 			this->button1->TabIndex = 36;
@@ -323,9 +323,9 @@ namespace mainProject {
 			this->label2->AutoSize = true;
 			this->label2->Location = System::Drawing::Point(385, 291);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(112, 13);
+			this->label2->Size = System::Drawing::Size(40, 13);
 			this->label2->TabIndex = 38;
-			this->label2->Text = L"Спеціалізація лікаря:";
+			this->label2->Text = L"Лікарі:";
 			// 
 			// piсBox
 			// 

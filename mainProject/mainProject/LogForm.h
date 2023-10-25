@@ -346,7 +346,7 @@ namespace mainProject {
 			this->gBAppoin->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10));
 			this->gBAppoin->Location = System::Drawing::Point(527, 248);
 			this->gBAppoin->Name = L"gBAppoin";
-			this->gBAppoin->Size = System::Drawing::Size(195, 191);
+			this->gBAppoin->Size = System::Drawing::Size(195, 210);
 			this->gBAppoin->TabIndex = 35;
 			this->gBAppoin->TabStop = false;
 			this->gBAppoin->Text = L"Ваші записи: ";

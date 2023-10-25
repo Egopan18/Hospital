@@ -1,4 +1,6 @@
-﻿  SignForm.cpp
+﻿  LogForm.cpp
+  NewRecordForm.cpp
+  SignForm.cpp
   StartForm.cpp
   Создание кода...
   AboutAppForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
