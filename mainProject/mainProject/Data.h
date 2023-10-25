@@ -44,7 +44,9 @@ public:
 	std::string userSurname;
 	std::string userMiddleName;
 	std::string userPhone;//Для телефона можно(нужно?) сделать нормализацию строки, чтобы независимо от кол-ва пробелов и.т.п при вводе, в результате был один формат
-	tm userBirthDate; 
+	tm userBirthDate;
+
+	
 	
 
 	User();
