@@ -24,6 +24,7 @@
 //#include<pugixml-master/src/pugixml.cpp> //pugixml.cpp соответственно добавить в файлы исходного кода.
 #include<nlohmann/single_include/nlohmann/json.hpp> //с этим по идее можно сделать так же, но у меня оно подключено через свойства проекта
 
+#include"MyForm.h"
 
 using json = nlohmann::json;
 
@@ -43,6 +44,9 @@ public:
 	std::string userSurname;
 	std::string userMiddleName;
 	std::string userPhone;//Для телефона можно(нужно?) сделать нормализацию строки, чтобы независимо от кол-ва пробелов и.т.п при вводе, в результате был один формат
+	tm userBirthDate; 
+	
+
 	User();
 
 	friend std::vector<User> read_usertable(const std::string& Filename);//Считывает вектор юзеров из json или xml файла

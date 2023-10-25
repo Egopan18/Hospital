@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Data.h"
+#include"MyForm.h"
 
 const std::string dbHost = "tcp://127.0.0.1:3306";
 const std::string dbUser = "root";
@@ -8,7 +9,6 @@ const std::string dbPassword = "D3007_d2005"; //поменяйте это на �
 const std::string dbName = "hospitaldb";
 sql::mysql::MySQL_Driver* driver;
 sql::Connection* con;
-
 
 bool connect_todb()
 {
@@ -75,6 +75,9 @@ User::User()
     userMiddleName = "DefMidName";
     userPhone = "+000 000 000 0000";
     userPassword = "P5ssW0rD";
+    userBirthDate.tm_year = 2000;
+    userBirthDate.tm_mon = 0;
+    userBirthDate.tm_mday = 1;
 }
 
 void User::write_userrow()
@@ -96,9 +99,11 @@ void User::write_userrow()
         }
         else
         {
-            prep_stmt = con->prepareStatement("UPDATE user SET userAge = ?, userName = ?, userSurname = ?, userMiddleName = ?, userPhone = ?, userPassword = ? WHERE userID = ?");
+            prep_stmt = con->prepareStatement("UPDATE user SET userAge = ?, userName = ?, userSurname = ?, userMiddleName = ?, userPhone = ?, userPassword = ? userBirthDate = ? WHERE userID = ?");
             prep_stmt->setInt(7, userID);
         }
+        char dateStr[11]; // "YYYY-MM-DD\0"
+        std::strftime(dateStr, 11, "%Y-%m-%d", &userBirthDate);
 
         prep_stmt->setInt(1, userAge);
         prep_stmt->setString(2, userName);
@@ -106,6 +111,7 @@ void User::write_userrow()
         prep_stmt->setString(4, userMiddleName);
         prep_stmt->setString(5, userPhone);
         prep_stmt->setString(6, userPassword);
+        prep_stmt->setDateTime(7, dateStr);
 
         prep_stmt->execute();
 
@@ -140,6 +146,9 @@ void User::write_userrow(const std::string& Filename)
         userNode["userMiddleName"] = userMiddleName;
         userNode["userPhone"] = userPhone;
         userNode["userPassword"] = userPassword;
+        userNode["userBirthYear"] = userBirthDate.tm_year;
+        userNode["userBirthMon"] = userBirthDate.tm_mon;
+        userNode["userBirthDay"] = userBirthDate.tm_mday;
 
         if (jsonData.is_array())
         {
@@ -172,6 +181,9 @@ void User::write_userrow(const std::string& Filename)
             userNode.append_child("userMiddleName").text().set(userMiddleName.c_str());
             userNode.append_child("userPhone").text().set(userPhone.c_str());
             userNode.append_child("userPassword").text().set(userPassword.c_str());
+            userNode.append_child("userBirthYear").text().set(userBirthDate.tm_year);
+            userNode.append_child("userBirthMon").text().set(userBirthDate.tm_mon);
+            userNode.append_child("userBirthDay").text().set(userBirthDate.tm_mday);
         }
         else
         {
@@ -185,6 +197,9 @@ void User::write_userrow(const std::string& Filename)
             userNode.append_child("userMiddleName").text().set(userMiddleName.c_str());
             userNode.append_child("userPhone").text().set(userPhone.c_str());
             userNode.append_child("userPassword").text().set(userPassword.c_str());
+            userNode.append_child("userBirthYear").text().set(userBirthDate.tm_year);
+            userNode.append_child("userBirthMon").text().set(userBirthDate.tm_mon);
+            userNode.append_child("userBirthDay").text().set(userBirthDate.tm_mday);
         }
 
         if (doc.save_file(Filename.c_str()))
@@ -220,6 +235,9 @@ User User::read_userrow(int userID, const std::string& Filename)
                     this->userMiddleName = userNode["userMiddleName"];
                     this->userPhone = userNode["userPhone"];
                     this->userPassword = userNode["userPassword"];
+                    this->userBirthDate.tm_year = userNode["userBirthYear"];  
+                    this->userBirthDate.tm_mon = userNode["userBirthMon"];
+                    this->userBirthDate.tm_mday = userNode["userBirthDay"];
 
                     User ret = *this;
                     return ret;
@@ -246,6 +264,9 @@ User User::read_userrow(int userID, const std::string& Filename)
                     this->userMiddleName = userNode.child("userMiddleName").text().as_string();
                     this->userPhone = userNode.child("userPhone").text().as_string();
                     this->userPassword = userNode.child("userPassword").text().as_string();
+                    this->userBirthDate.tm_year = userNode.child("userBirthYear").text().as_int();
+                    this->userBirthDate.tm_mon = userNode.child("userBirthMon").text().as_int();
+                    this->userBirthDate.tm_mday = userNode.child("userBirthDay").text().as_int();
 
                     User ret = *this;
                     return ret;
@@ -279,7 +300,14 @@ User User::read_userrow(int userID)
             userSurname = res->getString("userSurname");
             userMiddleName = res->getString("userMiddleName");
             userPhone = res->getString("userPhone");
+            // чтение даты как строки
+            std::string BirthDateStr = res->getString("userBirthDate");
 
+            // парсер даты в, собственно, дату
+            if (sscanf_s(BirthDateStr.c_str(), "%d-%d-%d", &this->userBirthDate.tm_year, &this->userBirthDate.tm_mon, &this->userBirthDate.tm_mday) == 3) {
+                //this->docEmploymentDate.tm_mon -= 1; //не помню надо это или нет, бтв январь в sql это 0    
+            }
+            
             User ret = *this;
             return ret;
 
@@ -343,6 +371,7 @@ Hospital Hospital::read_hospitalrow(int hospitalID)
             hospitalAddress = res->getString("hospitalAddress");
             hospitalName = res->getString("hospitalName");
             hospitalRating = res->getInt("hospitalRating");
+            
             Hospital ret = *this;
             return ret;
 
@@ -1228,6 +1257,12 @@ std::vector<User> read_usertable()
             user.userMiddleName = res->getString("userMiddleName");
             user.userPhone = res->getString("userPhone");
             user.userPassword = res->getString("userPassword");
+            std::string tempdate= res->getString("userBirthDate");
+
+            if (sscanf_s(tempdate.c_str(), "%d-%d-%d", user.userBirthDate.tm_year, user.userBirthDate.tm_mon, user.userBirthDate.tm_mday) == 3)
+            {
+                //tmp.docEmploymentDate.tm_mon -= 1;    
+            }
 
             users.push_back(user);
         }
@@ -1272,6 +1307,11 @@ std::vector<User> read_usertable(const std::string& Filename)
             user.userMiddleName = userNode.child_value("userMiddleName");
             user.userPhone = userNode.child_value("userPhone");
             user.userPassword = userNode.child_value("userPassword");
+            user.userBirthDate.tm_year= userNode.child("userBirthYear").text().as_int();
+            user.userBirthDate.tm_mon = userNode.child("userBirthMon").text().as_int();
+            user.userBirthDate.tm_mday = userNode.child("userBirthDay").text().as_int();
+
+
 
             users.push_back(user);
         }
@@ -1302,6 +1342,9 @@ std::vector<User> read_usertable(const std::string& Filename)
                 user.userMiddleName = userNode["userMiddleName"];
                 user.userPhone = userNode["userPhone"];
                 user.userPassword = userNode["userPassword"];
+                user.userBirthDate.tm_year = userNode["userBirthYear"];
+                user.userBirthDate.tm_mon = userNode["userBirthMon"];
+                user.userBirthDate.tm_mday = userNode["userBirthDay"];
 
                 users.push_back(user);
             }
@@ -1330,6 +1373,10 @@ void write_usertable(const std::vector<User>& users, const std::string& Filename
             userNode["userMiddleName"] = user.userMiddleName;
             userNode["userPhone"] = user.userPhone;
             userNode["userPassword"] = user.userPassword;
+            userNode["userBirthYear"] = user.userBirthDate.tm_year; 
+            userNode["userBirthMon"] = user.userBirthDate.tm_mon;
+            userNode["userBirthDay"] = user.userBirthDate.tm_mday;// winforms date doesn't work here;
+
 
             jsonData.push_back(userNode);
         }
@@ -1362,6 +1409,9 @@ void write_usertable(const std::vector<User>& users, const std::string& Filename
             userNode.append_child("userMiddleName").text().set(user.userMiddleName.c_str());
             userNode.append_child("userPhone").text().set(user.userPhone.c_str());
             userNode.append_child("userPassword").text().set(user.userPassword.c_str());
+            userNode.append_child("userBirthYear").text().set(user.userBirthDate.tm_year);
+            userNode.append_child("userBirthMon").text().set(user.userBirthDate.tm_mon);
+            userNode.append_child("userBirthDay").text().set(user.userBirthDate.tm_mday);
         }
 
         if (doc.save_file(Filename.c_str()))
