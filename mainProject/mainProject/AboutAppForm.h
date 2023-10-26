@@ -106,7 +106,7 @@ namespace mainProject {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"AboutAppForm";
-			this->Text = L"AboutAppForm";
+			this->Text = L"Про застосунок і розробників";
 			this->HelpRequested += gcnew System::Windows::Forms::HelpEventHandler(this, &AboutAppForm::AboutAppForm_HelpRequested);
 			this->ResumeLayout(false);
 			this->PerformLayout();

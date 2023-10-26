@@ -363,7 +363,7 @@ namespace mainProject {
 			this->Controls->Add(this->groupBox1);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"NewRecordForm";
-			this->Text = L"NewRecordForm";
+			this->Text = L"Створити новий запис";
 			this->HelpRequested += gcnew System::Windows::Forms::HelpEventHandler(this, &NewRecordForm::NewRecordForm_HelpRequested);
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();

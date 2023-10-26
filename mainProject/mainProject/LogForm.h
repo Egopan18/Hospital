@@ -317,9 +317,9 @@ namespace mainProject {
 			this->lDocFio->AutoSize = true;
 			this->lDocFio->Location = System::Drawing::Point(29, 373);
 			this->lDocFio->Name = L"lDocFio";
-			this->lDocFio->Size = System::Drawing::Size(38, 13);
+			this->lDocFio->Size = System::Drawing::Size(34, 13);
 			this->lDocFio->TabIndex = 29;
-			this->lDocFio->Text = L"Ô²Î : ";
+			this->lDocFio->Text = L"Ï²Á : ";
 			// 
 			// lExp
 			// 
@@ -449,7 +449,7 @@ namespace mainProject {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"LogForm";
-			this->Text = L"LogForm";
+			this->Text = L"Ãîëîâíà ñòîð³íêà";
 			this->HelpRequested += gcnew System::Windows::Forms::HelpEventHandler(this, &LogForm::LogForm_HelpRequested);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->piñBox))->EndInit();
 			this->ResumeLayout(false);

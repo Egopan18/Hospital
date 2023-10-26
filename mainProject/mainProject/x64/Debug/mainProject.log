@@ -1,7 +1,3 @@
-﻿  LogForm.cpp
-  NewRecordForm.cpp
-  SignForm.cpp
-  StartForm.cpp
-  Создание кода...
-  AboutAppForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
+﻿  StartForm.cpp
+  AboutAppForm.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   mainProject.vcxproj -> D:\курсовий\Hospital\mainProject\x64\Debug\mainProject.exe

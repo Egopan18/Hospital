@@ -325,7 +325,7 @@ namespace mainProject {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"SignForm";
-			this->Text = L"SignForm";
+			this->Text = L"Зареєструватися";
 			this->HelpRequested += gcnew System::Windows::Forms::HelpEventHandler(this, &SignForm::SignForm_HelpRequested);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picBox))->EndInit();
 			this->ResumeLayout(false);
