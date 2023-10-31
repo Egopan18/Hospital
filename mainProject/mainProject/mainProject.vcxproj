@@ -105,10 +105,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STATIC_CONCPP;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\mysql-connector-c++-8.2.0-winx64\include;F:\Downloads\include\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>mysqlcppconn-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\mysql-connector-c++-8.2.0-winx64\lib64\vs14;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -119,6 +121,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\..\..\..\..\Downloads\pugixml-1.14\pugixml-1.14\src\pugixml.cpp" />
     <ClCompile Include="AboutAppForm.cpp" />
     <ClCompile Include="Algorithms.cpp" />
     <ClCompile Include="Classes.cpp" />
@@ -130,6 +133,8 @@
     <ClCompile Include="StartForm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\..\..\..\..\Downloads\pugixml-1.14\pugixml-1.14\src\pugiconfig.hpp" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\..\..\Downloads\pugixml-1.14\pugixml-1.14\src\pugixml.hpp" />
     <ClInclude Include="AboutAppForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
