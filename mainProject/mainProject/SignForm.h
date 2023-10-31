@@ -1,6 +1,8 @@
 #pragma once
 #include "LogForm.h" 
-
+#include "Data.h"
+#include <msclr/marshal_cppstd.h>
+#include <ctime>
 namespace mainProject {
 
 	using namespace System;
@@ -337,6 +339,35 @@ namespace mainProject {
 
 	private: System::Void BSign_Click(System::Object^ sender, System::EventArgs^ e) {
 
+		User obj;
+		//Конвертація
+		System::String^ TbUser = TbName->Text;
+		System::String^ TbSurname = TbSurn->Text;
+		System::String^ TbPat = TbPatr->Text;
+		System::String^ TbTelephone = TbTel->Text;
+		System::DateTime^ TbBirthday = dateBith->Value;
+		System::String^ TbPassword = mTbPassw->Text;
+
+		std::string Name = msclr::interop::marshal_as<std::string>(TbUser);
+		std::string Surname = msclr::interop::marshal_as<std::string>(TbSurname);
+		std::string MiddleName = msclr::interop::marshal_as<std::string>(TbPat);
+		std::string Telephone = msclr::interop::marshal_as<std::string>(TbTelephone);
+		std::tm Birthday = {};
+		Birthday.tm_year = TbBirthday->Year - 1900;
+		Birthday.tm_mon = TbBirthday->Month - 1;
+		Birthday.tm_mday = TbBirthday->Day;
+		std::string Password = msclr::interop::marshal_as<std::string>(TbPassword);
+		//Конвертація
+
+		//ЗАПИС
+		obj.userName = Name;
+		obj.userSurname = Surname;
+		obj.userMiddleName = MiddleName;
+		obj.userPhone = Telephone;
+		obj.userBirthDate = Birthday;
+		obj.userPassword = Password;
+		obj.write_userrow();
+		//ЗАПИС
 
 		// Створюємо новий екземпляр форми LogForm
 		LogForm^ logForm = gcnew LogForm();
