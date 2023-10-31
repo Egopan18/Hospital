@@ -95,7 +95,7 @@ void User::write_userrow()
         if (userID == 0)
         {
             // если юзерайди==0 - создание нового, иначе - обновление существующего //мб стоит поменять в таких функциях 0 на что-то типа 9999, но мне лень, а таблицы в бд начинаются с 1.
-            prep_stmt = con->prepareStatement("INSERT INTO user (userAge, userName, userSurname, userMiddleName, userPhone, userPassword) VALUES (?, ?, ?, ?, ?, ?)");
+            prep_stmt = con->prepareStatement("INSERT INTO user (userAge, userName, userSurname, userMiddleName, userPhone, userPassword, userBirthDate) VALUES (?, ?, ?, ?, ?, ?, ?)");
         }
         else
         {
