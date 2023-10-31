@@ -2,7 +2,7 @@
 #ifndef DATA_H
 #define DATA_H
 
-//А куда делся includes.h? 
+//А куда делся includes.h?
 #include<iostream>
 #include<string>
 #include<algorithm>
@@ -17,19 +17,15 @@
 #include <jdbc/cppconn/prepared_statement.h>
 #include <jdbc/cppconn/resultset.h>
 
-
 #include <nlohmann/json.hpp>
 #include "pugixml.hpp"
 
-
 using json = nlohmann::json;
-
 
 bool connect_todb();
 void close_connection();
 bool execute_query(const std::string& query);
 std::string get_filetype(std::string filename);
-
 
 class User
 {
@@ -41,9 +37,6 @@ public:
 	std::string userMiddleName;
 	std::string userPhone;//Для телефона можно(нужно?) сделать нормализацию строки, чтобы независимо от кол-ва пробелов и.т.п при вводе, в результате был один формат
 	tm userBirthDate;
-
-
-
 
 	User();
 
@@ -67,8 +60,6 @@ public:
 	std::string userPassword;//TODO encryption, validation, strongness analization;
 };
 
-
-
 class Hospital
 {
 public:
@@ -87,7 +78,6 @@ public:
 	Hospital read_hospitalrow(int hospitalID, const std::string& Filename);
 	Hospital read_hospitalrow(int hospitalID);
 
-
 	friend void write_hospitaltable(const std::vector<Hospital>& hospitals, const std::string& Filename);
 	friend void write_hospitaltable(std::vector<Hospital>& hospitals);
 
@@ -97,7 +87,6 @@ public:
 	friend void hospitaltable_toDB(const std::string& Filename);
 
 	void print_hospital();
-
 };
 
 class Doctor : public Hospital
@@ -128,7 +117,6 @@ public:
 	Doctor read_doctorrow(int doctorID, const std::string& Filename);
 	Doctor read_doctorrow(int doctorID);
 
-
 	friend void write_doctortable(const std::vector<Doctor>& doctors, const std::string& Filename);
 	friend void write_doctortable(std::vector<Doctor>& doctors);
 
@@ -140,10 +128,7 @@ public:
 	std::string get_workingdays(int docID);//считывает рабочие дни из бд в одну большую строку.
 
 	void print_doctor();
-
 };
-
-
 
 class Visit : public User, Doctor
 {
@@ -166,7 +151,6 @@ public:
 	Visit read_visitrow(int visitID, const std::string& Filename);
 	Visit read_visitrow(int visitID);
 
-
 	friend void write_visittable(const std::vector<Visit>& visits, const std::string& Filename);
 	friend void write_visittable(std::vector<Visit>& visits);
 
@@ -176,6 +160,5 @@ public:
 	friend void visittable_toDB(const std::string& Filename);
 
 	void print_visit();
-
 };
 #endif
