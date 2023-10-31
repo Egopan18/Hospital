@@ -119,20 +119,53 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AboutAppForm.cpp" />
     <ClCompile Include="Algorithms.cpp" />
     <ClCompile Include="Classes.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="Exceptions.cpp" />
-    <ClCompile Include="MyForm.cpp" />
+    <ClCompile Include="LogForm.cpp" />
+    <ClCompile Include="NewRecordForm.cpp" />
+    <ClCompile Include="SignForm.cpp" />
+    <ClCompile Include="StartForm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AboutAppForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Algorithms.h" />
     <ClInclude Include="Classes.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="Exceptions.h" />
-    <ClInclude Include="MyForm.h">
+    <ClInclude Include="LogForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="NewRecordForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="SignForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="StartForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AboutAppForm.resx">
+      <DependentUpon>AboutAppForm.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogForm.resx">
+      <DependentUpon>LogForm.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewRecordForm.resx">
+      <DependentUpon>NewRecordForm.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SignForm.resx">
+      <DependentUpon>SignForm.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StartForm.resx">
+      <DependentUpon>StartForm.h</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
