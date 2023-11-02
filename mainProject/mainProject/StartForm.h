@@ -257,8 +257,8 @@ namespace mainProject {
 			std::vector<User> UsVec1 = read_usertable();
 			System::String^ NowNumber = TbTel->Text;
 			System::String^ NowPassword = mTbPassw->Text;
-			std::string Phone_Number = msclr::interop::marshal_as<std::string>(NowNumber);
-			std::string Password = msclr::interop::marshal_as<std::string>(NowPassword);
+			std::string Phone_Number = ParseToString(NowNumber);
+			std::string Password = ParseToString(NowPassword);
 			//Перевірочні змінні
 			bool phoneNumberExists = false;
 			bool passwordExists = false;

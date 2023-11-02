@@ -7,3 +7,4 @@
 #include <algorithm>
 #include <ctime>
 #include <fstream>
+#include <msclr/marshal_cppstd.h>

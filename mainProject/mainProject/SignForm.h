@@ -329,15 +329,12 @@ namespace mainProject {
 		System::DateTime^ TbBirthday = dateBith->Value;
 		System::String^ TbPassword = mTbPassw->Text;
 
-		std::string Name = msclr::interop::marshal_as<std::string>(TbUser);
-		std::string Surname = msclr::interop::marshal_as<std::string>(TbSurname);
-		std::string MiddleName = msclr::interop::marshal_as<std::string>(TbPat);
-		std::string Telephone = msclr::interop::marshal_as<std::string>(TbTelephone);
-		std::tm Birthday = {};
-		Birthday.tm_year = TbBirthday->Year - 1900;
-		Birthday.tm_mon = TbBirthday->Month - 1;
-		Birthday.tm_mday = TbBirthday->Day;
-		std::string Password = msclr::interop::marshal_as<std::string>(TbPassword);
+		std::string Name = ParseToString(TbUser);
+		std::string Surname = ParseToString(TbSurname);
+		std::string MiddleName = ParseToString(TbPat);
+		std::string Telephone = ParseToString(TbTelephone);
+		std::tm Birthday = ParseToTm(TbBirthday);
+		std::string Password = ParseToString(TbPassword);
 		//Конвертація
 
 		//ЗАПИC

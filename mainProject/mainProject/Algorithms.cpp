@@ -10,7 +10,25 @@ int AgeCalculator(User& obj, tm Date)
 	int age = now.Year - (Date.tm_year + 1900);
 	return age;
 }
+//Парсинг
+std::string ParseToString(System::Object^ data)
+{
+	if (System::String^ str = dynamic_cast<System::String^>(data))
+	{
+		return msclr::interop::marshal_as<std::string>(data->ToString());
+	}
+	
+}
+std::tm ParseToTm(System::DateTime^ date)
+{
+	std::tm Date = {};
+	Date.tm_year = date->Year - 1900;
+	Date.tm_mon = date->Month - 1;
+	Date.tm_mday = date->Day;
 
+	return Date;
+}
+//Функції хешування паролю
 int Hash::receivingCodes(int x)
 {
 	//здвигаємо значення в діапазон таблиці ASCII
