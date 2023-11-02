@@ -1,10 +1,11 @@
 ﻿#pragma once
-#include "LogForm.h" 
-#include "SignForm.h" 
+#include "LogForm.h"
+#include "SignForm.h"
 #include "AboutAppForm.h"
-
+#include <msclr/marshal_cppstd.h>
+#include "Data.h"
+#include "Algorithms.h"
 namespace mainProject {
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -45,52 +46,19 @@ namespace mainProject {
 	private: System::Windows::Forms::Label^ lAbo;
 	protected:
 
-
-
-
 	protected:
 
 	protected:
-
-
-
-
-
-
-
-
-
-
-
-
 
 	private: System::Windows::Forms::TextBox^ TbTel;
-
-
 
 	private: System::Windows::Forms::Label^ lWelcome;
 	private: System::Windows::Forms::MaskedTextBox^ mTbPassw;
 	private: System::Windows::Forms::CheckBox^ CbShow;
 
-
-
 	private: System::Windows::Forms::Button^ bQuestion;
 	private: System::Windows::Forms::Label^ linfo;
 	private: System::Windows::Forms::PictureBox^ picBox;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	private:
 		/// <summary>
@@ -120,9 +88,9 @@ namespace mainProject {
 			this->picBox = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picBox))->BeginInit();
 			this->SuspendLayout();
-			// 
+			//
 			// Blog
-			// 
+			//
 			this->Blog->Location = System::Drawing::Point(212, 322);
 			this->Blog->Margin = System::Windows::Forms::Padding(2);
 			this->Blog->Name = L"Blog";
@@ -132,9 +100,9 @@ namespace mainProject {
 			this->Blog->UseVisualStyleBackColor = true;
 			this->Blog->Click += gcnew System::EventHandler(this, &StartForm::Blog_Click);
 			this->Blog->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &StartForm::Blog_MouseMove);
-			// 
+			//
 			// BSign
-			// 
+			//
 			this->BSign->Location = System::Drawing::Point(212, 387);
 			this->BSign->Margin = System::Windows::Forms::Padding(2);
 			this->BSign->Name = L"BSign";
@@ -144,9 +112,9 @@ namespace mainProject {
 			this->BSign->UseVisualStyleBackColor = true;
 			this->BSign->Click += gcnew System::EventHandler(this, &StartForm::BSign_Click);
 			this->BSign->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &StartForm::BSign_MouseMove);
-			// 
+			//
 			// Ltel
-			// 
+			//
 			this->Ltel->AutoSize = true;
 			this->Ltel->Location = System::Drawing::Point(154, 228);
 			this->Ltel->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
@@ -154,9 +122,9 @@ namespace mainProject {
 			this->Ltel->Size = System::Drawing::Size(55, 13);
 			this->Ltel->TabIndex = 3;
 			this->Ltel->Text = L"Телефон:";
-			// 
+			//
 			// Lpassw
-			// 
+			//
 			this->Lpassw->AutoSize = true;
 			this->Lpassw->Location = System::Drawing::Point(154, 270);
 			this->Lpassw->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
@@ -164,9 +132,9 @@ namespace mainProject {
 			this->Lpassw->Size = System::Drawing::Size(48, 13);
 			this->Lpassw->TabIndex = 4;
 			this->Lpassw->Text = L"Пароль:";
-			// 
+			//
 			// lAbo
-			// 
+			//
 			this->lAbo->AutoSize = true;
 			this->lAbo->Location = System::Drawing::Point(274, 362);
 			this->lAbo->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
@@ -174,18 +142,18 @@ namespace mainProject {
 			this->lAbo->Size = System::Drawing::Size(25, 13);
 			this->lAbo->TabIndex = 5;
 			this->lAbo->Text = L"або";
-			// 
+			//
 			// TbTel
-			// 
+			//
 			this->TbTel->Location = System::Drawing::Point(236, 228);
 			this->TbTel->Margin = System::Windows::Forms::Padding(2);
 			this->TbTel->Name = L"TbTel";
 			this->TbTel->Size = System::Drawing::Size(108, 20);
 			this->TbTel->TabIndex = 7;
 			this->TbTel->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &StartForm::TbTel_MouseMove);
-			// 
+			//
 			// lWelcome
-			// 
+			//
 			this->lWelcome->AutoSize = true;
 			this->lWelcome->BackColor = System::Drawing::SystemColors::Control;
 			this->lWelcome->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 25, System::Drawing::FontStyle::Bold));
@@ -195,18 +163,18 @@ namespace mainProject {
 			this->lWelcome->Size = System::Drawing::Size(160, 39);
 			this->lWelcome->TabIndex = 11;
 			this->lWelcome->Text = L"Вітаємо!";
-			// 
+			//
 			// mTbPassw
-			// 
+			//
 			this->mTbPassw->Location = System::Drawing::Point(234, 270);
 			this->mTbPassw->Name = L"mTbPassw";
 			this->mTbPassw->PasswordChar = '*';
 			this->mTbPassw->Size = System::Drawing::Size(108, 20);
 			this->mTbPassw->TabIndex = 12;
 			this->mTbPassw->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &StartForm::mTbPassw_MouseMove);
-			// 
+			//
 			// CbShow
-			// 
+			//
 			this->CbShow->AutoSize = true;
 			this->CbShow->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7));
 			this->CbShow->Location = System::Drawing::Point(350, 273);
@@ -217,9 +185,9 @@ namespace mainProject {
 			this->CbShow->UseVisualStyleBackColor = true;
 			this->CbShow->CheckedChanged += gcnew System::EventHandler(this, &StartForm::CbShow_CheckedChanged);
 			this->CbShow->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &StartForm::CbShow_MouseMove);
-			// 
+			//
 			// bQuestion
-			// 
+			//
 			this->bQuestion->Font = (gcnew System::Drawing::Font(L"Snap ITC", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->bQuestion->Location = System::Drawing::Point(494, 474);
@@ -230,9 +198,9 @@ namespace mainProject {
 			this->bQuestion->UseVisualStyleBackColor = true;
 			this->bQuestion->Click += gcnew System::EventHandler(this, &StartForm::button1_Click);
 			this->bQuestion->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &StartForm::bQuestion_MouseMove);
-			// 
+			//
 			// linfo
-			// 
+			//
 			this->linfo->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->linfo->AutoSize = true;
 			this->linfo->Location = System::Drawing::Point(12, 489);
@@ -240,9 +208,9 @@ namespace mainProject {
 			this->linfo->Size = System::Drawing::Size(256, 13);
 			this->linfo->TabIndex = 18;
 			this->linfo->Text = L"Для отриманя інформації по формі - натисніть F1";
-			// 
+			//
 			// picBox
-			// 
+			//
 			this->picBox->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"picBox.Image")));
 			this->picBox->Location = System::Drawing::Point(144, -26);
 			this->picBox->Name = L"picBox";
@@ -250,9 +218,9 @@ namespace mainProject {
 			this->picBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->picBox->TabIndex = 19;
 			this->picBox->TabStop = false;
-			// 
+			//
 			// StartForm
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(534, 511);
@@ -277,26 +245,68 @@ namespace mainProject {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picBox))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
 		}
 #pragma endregion
-	private: System::Void Blog_Click(System::Object^ sender, System::EventArgs^ e) {
 
-		// Створюємо новий екземпляр форми LogForm
-		LogForm^ logForm = gcnew LogForm();
+	private:
+		//Вхід
+		System::Void Blog_Click(System::Object^ sender, System::EventArgs^ e) {
+			//Записуємо дані із б\д в вектор.
+			Hash obj;
+			int i = 3;
+			std::vector<User> UsVec1 = read_usertable();
+			System::String^ NowNumber = TbTel->Text;
+			System::String^ NowPassword = mTbPassw->Text;
+			std::string Phone_Number = msclr::interop::marshal_as<std::string>(NowNumber);
+			std::string Password = msclr::interop::marshal_as<std::string>(NowPassword);
+			//Перевірочні змінні
+			bool phoneNumberExists = false;
+			bool passwordExists = false;
+			std::string hashPassword;
+			hashPassword = obj.getHash(Password, 6);
+			//Записуємо номера
+			for (const User& user : UsVec1)
+			{
+				//Перевіряємо
+				if (Phone_Number == user.userPhone)
+				{
+					phoneNumberExists = true;
+					break;
+				}
+			}
+			//Записуємо паролі
+			for (const User& user : UsVec1)
+			{
+				if (hashPassword == user.userPassword)
+				{
+					passwordExists = true;
+					break;
+				}
+			}
+			//Якщо користувач є в базі
+			if (phoneNumberExists && passwordExists)
+			{
+				// Створюємо новий екземпляр форми LogForm
+				LogForm^ logForm = gcnew LogForm();
 
-		// Ховаємо поточну форму 
-		this->Hide();
+				// Ховаємо поточну форму
+				this->Hide();
 
-		// Показуємо нову форму LogForm
-		logForm->Show();
-	}
+				// Показуємо нову форму LogForm
+				logForm->Show();
+			}
+			//Якщо немає в базі
+			else
+			{
+				//Треба зробити викид якогось повідомлення.
+				Console::WriteLine("PhoneNumber false");
+			}
+		}
 	private: System::Void BSign_Click(System::Object^ sender, System::EventArgs^ e) {
-
 		// Створюємо новий екземпляр форми SignForm
 		SignForm^ signForm = gcnew SignForm();
 
-		// Ховаємо поточну форму 
+		// Ховаємо поточну форму
 		this->Hide();
 
 		// Показуємо нову форму LogForm
@@ -313,7 +323,6 @@ namespace mainProject {
 	}
 
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-
 		// Створюємо новий екземпляр форми SignForm
 		AboutAppForm^ aboutForm = gcnew AboutAppForm();;
 
@@ -322,7 +331,6 @@ namespace mainProject {
 	}
 
 		   System::Windows::Forms::ToolTip^ toolTip1;
-
 
 	private: System::Void TbTel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		System::Windows::Forms::ToolTip^ toolTip1 = gcnew System::Windows::Forms::ToolTip();
@@ -354,7 +362,6 @@ namespace mainProject {
 		toolTip1->SetToolTip(bQuestion, "Кнопка виводу інформації о додатку та розробниках ");
 	}
 	private: System::Void StartForm_HelpRequested(System::Object^ sender, System::Windows::Forms::HelpEventArgs^ hlpevent) {
-
 		String^ helpText = "Ця форма дозволяє користувачам увійти в систему або зареєструвати новий обліковий запис.\n";
 		helpText += "Щоб увійти, введіть своє ім'я, телефон та пароль і натисніть кнопку 'Увійти'.\n";
 		helpText += "Щоб зареєструвати новий обліковий запис, натисніть 'Зареєструватись' і введіть необхідну інформацію.\n";

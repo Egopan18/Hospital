@@ -1,23 +1,23 @@
 ﻿  Algorithms.cpp
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Algorithms.cpp(52,24): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Algorithms.cpp(73,19): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Algorithms.cpp(77,26): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
   Data.cpp
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1262,44): warning C4477: "sscanf_s": в строке форматирования "%d" требуется аргумент типа "int *", но вариативный аргумент "1" имеет тип "int"
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1262,44): warning C4477: "sscanf_s": в строке форматирования "%d" требуется аргумент типа "int *", но вариативный аргумент "2" имеет тип "int"
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1262,44): warning C4477: "sscanf_s": в строке форматирования "%d" требуется аргумент типа "int *", но вариативный аргумент "3" имеет тип "int"
   SignForm.cpp
   StartForm.cpp
   Создание кода...
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(62): warning C4715: get_filetype: значение возвращается не при всех путях выполнения
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(328): warning C4715: User::read_userrow: значение возвращается не при всех путях выполнения
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(392): warning C4715: Hospital::read_hospitalrow: значение возвращается не при всех путях выполнения
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(614): warning C4715: Doctor::get_workingdays: значение возвращается не при всех путях выполнения
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(761): warning C4715: Doctor::read_doctorrow: значение возвращается не при всех путях выполнения
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1775): warning C4715: read_doctortable: значение возвращается не при всех путях выполнения
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(278): warning C4715: User::read_userrow: значение возвращается не при всех путях выполнения
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(444): warning C4715: Hospital::read_hospitalrow: значение возвращается не при всех путях выполнения
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(700): warning C4715: Doctor::read_doctorrow: значение возвращается не при всех путях выполнения
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1358): warning C4715: read_usertable: значение возвращается не при всех путях выполнения
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1510): warning C4715: read_hospitaltable: значение возвращается не при всех путях выполнения
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1718): warning C4715: read_doctortable: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(60): warning C4715: get_filetype: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(323): warning C4715: User::read_userrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(383): warning C4715: Hospital::read_hospitalrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(601): warning C4715: Doctor::get_workingdays: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(745): warning C4715: Doctor::read_doctorrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1733): warning C4715: read_doctortable: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(275): warning C4715: User::read_userrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(435): warning C4715: Hospital::read_hospitalrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(685): warning C4715: Doctor::read_doctorrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1322): warning C4715: read_usertable: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1470): warning C4715: read_hospitaltable: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1676): warning C4715: read_doctortable: значение возвращается не при всех путях выполнения
   pugixml.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
 mysqlcppconn-static.lib(mysql_art_resultset.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_art_resultset.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
 mysqlcppconn-static.lib(mysql_prepared_statement.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_prepared_statement.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных

@@ -319,6 +319,8 @@ namespace mainProject {
 
 	private: System::Void BSign_Click(System::Object^ sender, System::EventArgs^ e) {
 		User obj;
+		Hash pass;
+
 		// ÓÌ‚ÂÚ‡ˆ≥ˇ
 		System::String^ TbUser = TbName->Text;
 		System::String^ TbSurname = TbSurn->Text;
@@ -344,7 +346,7 @@ namespace mainProject {
 		obj.userMiddleName = MiddleName;
 		obj.userPhone = Telephone;
 		obj.userBirthDate = Birthday;
-		obj.userPassword = Password;
+		obj.userPassword = pass.getHash(Password, 6);
 		obj.userAge = AgeCalculator(obj, Birthday);
 		obj.write_userrow();
 		//«¿œ»—

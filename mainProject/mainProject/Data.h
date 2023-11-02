@@ -2,12 +2,8 @@
 #ifndef DATA_H
 #define DATA_H
 
-//А куда делся includes.h?
-#include<iostream>
-#include<string>
-#include<algorithm>
-#include<ctime>
-#include<fstream>
+#include "Include.h"
+
 
 #include <jdbc/mysql_driver.h>
 #include <jdbc/cppconn/driver.h>

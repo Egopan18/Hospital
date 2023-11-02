@@ -80,5 +80,8 @@
     <ClInclude Include="..\..\..\..\..\..\..\..\..\..\Downloads\pugixml-1.14\pugixml-1.14\src\pugixml.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Include.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
