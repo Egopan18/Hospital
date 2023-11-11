@@ -157,6 +157,7 @@ CREATE TABLE `visits` (
   `diagnosis` varchar(255) DEFAULT NULL,
   `prescription` text,
   `visitStatus` tinyint DEFAULT '0' COMMENT '1 planned, 2 - past',
+  `visitTime` time DEFAULT NULL,
   PRIMARY KEY (`visitID`),
   KEY `userID_idx` (`userID`),
   KEY `doctorID_idx` (`doctorID`),
@@ -171,7 +172,7 @@ CREATE TABLE `visits` (
 
 LOCK TABLES `visits` WRITE;
 /*!40000 ALTER TABLE `visits` DISABLE KEYS */;
-INSERT INTO `visits` VALUES (1,1,1,'2023-10-15','Checkup','Prescription 1',2),(2,1,3,'2023-11-10','Headache','Prescription 2',1),(3,2,2,'2023-09-20','Back Pain','Prescription 3',2),(4,2,4,'2023-10-05','Cough','Prescription 4',1),(5,3,3,'2023-08-10','Stomachache','Prescription 7',1),(6,3,5,'2023-09-02','Sprained Ankle','Prescription 8',2),(7,4,7,'2023-11-20','Cold','Prescription 9',1),(8,4,9,'2023-12-05','Back Pain','Prescription 10',2),(9,5,2,'2023-10-25','Cough','Prescription 11',2),(10,5,4,'2023-11-15','Migraine','Prescription 12',1);
+INSERT INTO `visits` VALUES (1,1,1,'2023-10-15','Checkup','Prescription 1',2,NULL),(2,1,3,'2023-11-10','Headache','Prescription 2',1,NULL),(3,2,2,'2023-09-20','Back Pain','Prescription 3',2,NULL),(4,2,4,'2023-10-05','Cough','Prescription 4',1,NULL),(5,3,3,'2023-08-10','Stomachache','Prescription 7',1,NULL),(6,3,5,'2023-09-02','Sprained Ankle','Prescription 8',2,NULL),(7,4,7,'2023-11-20','Cold','Prescription 9',1,NULL),(8,4,9,'2023-12-05','Back Pain','Prescription 10',2,NULL),(9,5,2,'2023-10-25','Cough','Prescription 11',2,NULL),(10,5,4,'2023-11-15','Migraine','Prescription 12',1,NULL);
 /*!40000 ALTER TABLE `visits` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -184,4 +185,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-11 16:03:56
+-- Dump completed on 2023-11-11 17:58:34
