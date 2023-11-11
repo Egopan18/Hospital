@@ -2,11 +2,13 @@
 #include "Data.h"
 //Функція для розрахунку віку
 int AgeCalculator(User& obj, tm Date);
-//ПарсингObejct^ в строку
+//ПарсингObejct^ в рядок
 std::string ParseToString(System::Object^ data);
-//ПарсингDateTime^ в tm
+//Парсинг DateTime^ в tm
 std::tm ParseToTm(System::DateTime^ data);
-
+//Парсинг NET в string
+System::String^ ParseToNETstring(std::string data);
+System::DateTime^ ConvertToDateTime(std::tm dateInfo);
 //Хеш
 class Hash
 {

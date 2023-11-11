@@ -15,6 +15,7 @@ namespace mainProject {
 	/// <summary>
 	/// Summary for SignForm
 	/// </summary>
+
 	public ref class SignForm : public System::Windows::Forms::Form
 	{
 	public:
@@ -347,14 +348,14 @@ namespace mainProject {
 		obj.userAge = AgeCalculator(obj, Birthday);
 		obj.write_userrow();
 		//ЗАПИС
-
+		System::String^ Pass = ParseToNETstring(Password);
 		// Створюємо новий екземпляр форми LogForm
-		LogForm^ logForm = gcnew LogForm();
+		LogForm^ logForm = gcnew LogForm(obj, Pass);
 
 		// Ховаємо поточну форму
 		this->Hide();
 
-		// Показуємо нову форму LogForm
+		// Показуємо нову форму StartForm
 		logForm->Show();
 	}
 

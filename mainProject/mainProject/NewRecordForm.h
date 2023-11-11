@@ -1,26 +1,217 @@
 #pragma once
-
+#include <vector>
+#include "Data.h"
+#include "Algorithms.h"
 namespace mainProject {
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Collections::Generic;
 
 	/// <summary>
 	/// Summary for NewRecordForm
 	/// </summary>
 	public ref class NewRecordForm : public System::Windows::Forms::Form
 	{
+	private:
+		String^ receivedText;
 	public:
-		NewRecordForm(void)
+		List<System::String^>^ selectedRegions;
+		List<System::String^>^ selectedSpec;
+		List<bool>^ selectedHospitalTypes;
+
+		NewRecordForm(String^ text)
 		{
 			InitializeComponent();
+			this->receivedText = text;
+			selectedRegions = gcnew List<System::String^>();
+			selectedSpec = gcnew List<System::String^>();
+			selectedHospitalTypes = gcnew List<bool>();
+			
+			this->cLBplace->ItemCheck += gcnew System::Windows::Forms::ItemCheckEventHandler(this, &NewRecordForm::UpdateSelectedRegions);
+			this->cLbDocType->ItemCheck += gcnew System::Windows::Forms::ItemCheckEventHandler(this, &NewRecordForm::UpdateSelectedSpec);
+			this->CbState->CheckedChanged += gcnew System::EventHandler(this, &NewRecordForm::chbHospitalType_CheckedChanged);
+			this->CbPrivate->CheckedChanged += gcnew System::EventHandler(this, &NewRecordForm::chbHospitalType_CheckedChanged);
+			this->cLbDoc->ItemCheck += gcnew ItemCheckEventHandler(this, &NewRecordForm::cLbDoc_ItemCheck);
+
 			//
 			//TODO: Add the constructor code here
 			//
+		}
+		void NewRecordForm::cLbDoc_ItemCheck(System::Object^ sender, System::Windows::Forms::ItemCheckEventArgs^ e)
+		{
+			std::vector<Visit> visits = read_visittable();
+			std::vector<Doctor> doctors = read_doctortable();
+
+
+			if (e->NewValue == CheckState::Checked)
+			{
+				
+				cBTimeSelect->Items->Clear();
+
+				// Получите данные о враче
+				Doctor selectedDoctor = doctors[e->Index + 1];
+
+				// Собираем все времена визитов для этого доктора
+				std::vector<std::string> doctorVisits;
+				for (const Visit& visit : visits)
+				{
+					if (visit.doctorID == selectedDoctor.docID)
+					{
+						char dateStr[11]; // Для хранения строки даты
+						std::sprintf(dateStr, "%04d-%02d-%02d",
+							visit.date.tm_year,
+							visit.date.tm_mon,
+							visit.date.tm_mday);
+							
+						char visitTimeStr[9]; // Для хранения строки времени
+						std::sprintf(visitTimeStr, "%02d:%02d:%02d", visit.timedate.tm_hour, visit.timedate.tm_min, visit.timedate.tm_sec);
+						std::string dateTime = std::string(dateStr) + " " + std::string(visitTimeStr);
+
+						doctorVisits.push_back(dateTime);
+					}
+				}
+
+				// Начальное и конечное время работы врача
+				int startHour = selectedDoctor.docWorkingHoursStart.tm_hour;
+				int startMinute = selectedDoctor.docWorkingHoursStart.tm_min;
+				int endHour = selectedDoctor.docWorkingHoursEnd.tm_hour;
+				int endMinute = selectedDoctor.docWorkingHoursEnd.tm_min;
+				//Дату которую выбрал пользователь
+				System::DateTime selectedDate = dTPSelect->Value;
+				char selectedDateStr[11];
+				std::sprintf(selectedDateStr, "%04d-%02d-%02d",
+					selectedDate.Year, selectedDate.Month, selectedDate.Day);
+				//генерации временных интервалов
+				for (int hour = startHour; hour <= endHour; hour++) {
+					for (int minute = (hour == startHour ? startMinute : 0); minute < 60; minute += 30) {
+						if (hour == endHour && minute > endMinute) break;
+
+						char timeSlotStr[20];
+						std::sprintf(timeSlotStr, "%s %02d:%02d:00", selectedDateStr, hour, minute);
+
+						if (std::find(doctorVisits.begin(), doctorVisits.end(), timeSlotStr) == doctorVisits.end()) {
+							// Если время не найдено среди визитов, оно свободно
+							System::String^ timeSlot = gcnew System::String(timeSlotStr + 11); // +11, чтобы пропустить дату
+							cBTimeSelect->Items->Add(timeSlot);
+						}
+					}
+				}
+
+			}
+			else if (e->NewValue == CheckState::Unchecked)
+			{
+				
+				cBTimeSelect->Items->Clear();
+			}
+		}
+		void UpdateSelectedRegions(System::Object^ sender, System::Windows::Forms::ItemCheckEventArgs^ e)
+		{
+			// Проверка состояния после того, как изменение будет применено
+			this->BeginInvoke(gcnew Action<System::Object^, System::Windows::Forms::ItemCheckEventArgs^>(this, &NewRecordForm::ActuallyUpdateSelectedRegions), sender, e);
+		}
+		void UpdateSelectedSpec(System::Object^ sender, System::Windows::Forms::ItemCheckEventArgs^ e)
+		{
+			this->BeginInvoke(gcnew Action<System::Object^, System::Windows::Forms::ItemCheckEventArgs^>(this, &NewRecordForm::ActuallyUpdateSelectedSpec), sender, e);
+		}
+		void chbHospitalType_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+		{
+			CheckBox^ checkBox = safe_cast<CheckBox^>(sender);
+
+			// Если это чекбокс для государственных больниц и он отмечен, то добавляем false в список
+			// Если это чекбокс для частных больниц и он отмечен, то добавляем true
+			selectedHospitalTypes->Clear();
+			if (CbState->Checked)
+				selectedHospitalTypes->Add(false);
+			if (CbPrivate->Checked)
+				selectedHospitalTypes->Add(true);
+
+			UpdateClinicsList();
+		}
+
+		void ActuallyUpdateSelectedRegions(System::Object^ sender, System::Windows::Forms::ItemCheckEventArgs^ e)
+		{
+			CheckedListBox^ list = safe_cast<CheckedListBox^>(sender);
+			System::String^ selectedItem = safe_cast<System::String^>(list->Items[e->Index]);
+
+			if (e->NewValue == CheckState::Checked)
+			{
+				// Если элемент выбран, добавляем его в список
+				selectedRegions->Add(selectedItem);
+			}
+			else if (e->NewValue == CheckState::Unchecked)
+			{
+				// Если элемент больше не выбран, удаляем его из списка
+				selectedRegions->Remove(selectedItem);
+			}
+
+			// Обновляем
+			UpdateClinicsList();
+		}
+		void ActuallyUpdateSelectedSpec(System::Object^ sender, System::Windows::Forms::ItemCheckEventArgs^ e)
+		{
+			CheckedListBox^ list = safe_cast<CheckedListBox^>(sender);
+			System::String^ selectedItem = safe_cast<System::String^>(list->Items[e->Index]);
+
+			if (e->NewValue == CheckState::Checked)
+			{
+				// Если элемент выбран, добавляем его в список
+				selectedSpec->Add(selectedItem);
+			}
+			else if (e->NewValue == CheckState::Unchecked)
+			{
+				// Если элемент больше не выбран, удаляем его из списка
+				selectedSpec->Remove(selectedItem);
+			}
+
+			// Обновляем
+			UpdateClinicsList();
+		}
+
+		void UpdateClinicsList()
+		{
+			std::vector<Hospital> hospitals = read_hospitaltable();
+			std::vector<Doctor> doctors = read_doctortable();
+
+			this->cLbHospital->Items->Clear();
+
+			for (size_t i = 0; i < hospitals.size(); i++)
+			{
+				Hospital hospital = hospitals[i];
+				// Проверяем, соответствует ли больница выбранным регионам и специализациям
+				bool regionSelected = selectedRegions->Count > 0 ? IsHospitalSelected(hospital.hospitalRegion) : true;
+				// Если специальность выбрана, проверяем наличие специалистов в больнице
+				bool specSelected = selectedSpec->Count > 0 ? HospitalHasRequiredSpecialties(hospital, doctors) : true;
+				bool typeSelected = selectedHospitalTypes->Count > 0 ? selectedHospitalTypes->Contains(hospital.hospitalIsPrivate) : true;
+
+				// Добавляем больницу, если она соответствует выбранным критериям
+				if (regionSelected && specSelected && typeSelected)
+				{
+					this->cLbHospital->Items->Add(gcnew String(hospital.hospitalName.c_str()));
+				}
+			}
+		}
+		bool IsHospitalSelected(std::string regions)
+		{
+			System::String^ region = ParseToNETstring(regions);
+
+			return selectedRegions->Contains(region);
+		}
+		bool HospitalHasRequiredSpecialties(const Hospital& hospital, const std::vector<Doctor>& doctors)
+		{
+			for (size_t i = 0; i < doctors.size(); i++)
+			{
+				Doctor doctor = doctors[i];
+				// Проверяем, работает ли врач в данной больнице и соответствует ли его специализация выбранным
+				if (doctor.docWorkPlace == hospital.hospitalID && selectedSpec->Contains(ParseToNETstring(doctor.docSpeciality)))
+				{
+					return true;
+				}
+			}
+			return false; // Если подходящих врачей не найдено
 		}
 
 	protected:
@@ -40,15 +231,8 @@ namespace mainProject {
 
 	protected:
 
-
 	private: System::Windows::Forms::CheckBox^ CbState;
 	private: System::Windows::Forms::CheckedListBox^ cLbDocType;
-
-
-
-
-
-
 
 	private: System::Windows::Forms::GroupBox^ groupBox1;
 	private: System::Windows::Forms::Label^ lPlace;
@@ -62,25 +246,14 @@ namespace mainProject {
 	private: System::Windows::Forms::Label^ linfo;
 	private: System::Windows::Forms::DateTimePicker^ dTPSelect;
 
-
 	private: System::Windows::Forms::CheckedListBox^ cLbDoc;
 	private: System::Windows::Forms::CheckedListBox^ cLbHospital;
-
 
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::Label^ lСlinic;
 
-
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::PictureBox^ piсBox;
-
-
-
-
-
-
-
-
 
 	protected:
 
@@ -128,8 +301,8 @@ namespace mainProject {
 			this->cLBplace->FormattingEnabled = true;
 			this->cLBplace->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
 				L"Вознесенівський (колишній Орджонікідзевський)",
-					L"Дніпровський (колишній Ленінський)", L"Комунарський", L"Олександрівський (колишній Жовтневий)", L"Шевченківський", L"Хортицький",
-					L"Заводський"
+					L"Дніпровський (колишній Ленінський)", L"Kommunarsky", L"Олександрівський (колишній Жовтневий)", L"Шевченківський", L"Khortytskyi",
+					L"Zavodskoy"
 			});
 			this->cLBplace->Location = System::Drawing::Point(6, 133);
 			this->cLBplace->Name = L"cLBplace";
@@ -163,9 +336,9 @@ namespace mainProject {
 			// 
 			this->cLbDocType->FormattingEnabled = true;
 			this->cLbDocType->Items->AddRange(gcnew cli::array< System::Object^  >(18) {
-				L"Акушер-гінеколог", L"Дерматолог", L"Гастроентеролог",
-					L"Гематолог", L"Гінеколог", L"Кардіолог", L"Невролог", L"Окуліст", L"Онколог", L"Ортопед", L"Отоларинголог (ЛОР-лікар)", L"Психіатр",
-					L"Пульмонолог", L"Ревматолог", L"Стоматолог", L"Терапевт", L"Уролог", L"Ендокринолог"
+				L"Акушер-гінеколог", L"Dermatologist", L"Гастроентеролог",
+					L"Гематолог", L"Gynaecologist", L"Cardiologist", L"Невролог", L"Окуліст", L"Онколог", L"Ортопед", L"Отоларинголог (ЛОР-лікар)",
+					L"Психіатр", L"Пульмонолог", L"Ревматолог", L"Стоматолог", L"Терапевт", L"Уролог", L"Ендокринолог"
 			});
 			this->cLbDocType->Location = System::Drawing::Point(297, 133);
 			this->cLbDocType->Name = L"cLbDocType";
@@ -282,12 +455,13 @@ namespace mainProject {
 			this->dTPSelect->Name = L"dTPSelect";
 			this->dTPSelect->Size = System::Drawing::Size(89, 20);
 			this->dTPSelect->TabIndex = 32;
+			this->dTPSelect->ValueChanged += gcnew System::EventHandler(this, &NewRecordForm::dTPSelect_ValueChanged);
 			this->dTPSelect->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &NewRecordForm::dTPSelect_MouseMove);
 			// 
 			// cLbDoc
 			// 
 			this->cLbDoc->FormattingEnabled = true;
-			this->cLbDoc->Location = System::Drawing::Point(388, 324);
+			this->cLbDoc->Location = System::Drawing::Point(384, 324);
 			this->cLbDoc->Name = L"cLbDoc";
 			this->cLbDoc->Size = System::Drawing::Size(438, 214);
 			this->cLbDoc->TabIndex = 34;
@@ -299,6 +473,7 @@ namespace mainProject {
 			this->cLbHospital->Name = L"cLbHospital";
 			this->cLbHospital->Size = System::Drawing::Size(212, 139);
 			this->cLbHospital->TabIndex = 35;
+			this->cLbHospital->SelectedIndexChanged += gcnew System::EventHandler(this, &NewRecordForm::cLbHospital_SelectedIndexChanged);
 			// 
 			// button1
 			// 
@@ -308,6 +483,7 @@ namespace mainProject {
 			this->button1->TabIndex = 36;
 			this->button1->Text = L"Знайти доступних лікарів";
 			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &NewRecordForm::button1_Click);
 			// 
 			// lСlinic
 			// 
@@ -377,51 +553,54 @@ namespace mainProject {
 
 	private: System::Void bSend_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Hide();
+		Visit obj;
+		std::vector<User> users = read_usertable();
+
+		for (auto& user : users)
+		{
+			if (user.userPhone == ParseToString(receivedText))
+			{
+				obj.clientID = user.userID;
+				obj.write_visitrow();
+				break;
+			}
+		}
 	}
 	private: System::Void cLBplace_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-
 		System::Windows::Forms::ToolTip^ toolTip1 = gcnew System::Windows::Forms::ToolTip();
 		toolTip1->SetToolTip(cLBplace, "Відмітьте галочкою райони в яких ви хочете побачити клініки ");
 	}
 	private: System::Void CbPrivate_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-
 		System::Windows::Forms::ToolTip^ toolTip1 = gcnew System::Windows::Forms::ToolTip();
 		toolTip1->SetToolTip(CbPrivate, "Відмітьте галочкою тип клініки ");
 	}
 	private: System::Void CbState_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-
 		System::Windows::Forms::ToolTip^ toolTip1 = gcnew System::Windows::Forms::ToolTip();
 		toolTip1->SetToolTip(CbState, "Відмітьте галочкою тип клініки ");
 	}
 	private: System::Void cLbDocType_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-
 		System::Windows::Forms::ToolTip^ toolTip1 = gcnew System::Windows::Forms::ToolTip();
 		toolTip1->SetToolTip(cLbDocType, "Відмітьте галочкою Обрану спеціалізацію лікаря");
 	}
 
 	private: System::Void cBTimeSelect_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-
 		System::Windows::Forms::ToolTip^ toolTip1 = gcnew System::Windows::Forms::ToolTip();
 		toolTip1->SetToolTip(cBTimeSelect, "Оберіть доступні час та дату прийому ");
 	}
 	private: System::Void tBComments_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-
 		System::Windows::Forms::ToolTip^ toolTip1 = gcnew System::Windows::Forms::ToolTip();
 		toolTip1->SetToolTip(tBComments, "Тут ви можете написати коментарі щодо вашого самопочуття ");
 	}
 	private: System::Void bSend_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-
 		System::Windows::Forms::ToolTip^ toolTip1 = gcnew System::Windows::Forms::ToolTip();
 		toolTip1->SetToolTip(bSend, "Кнопка для підтвердження реєстрації");
 	}
 
 	private: System::Void dTPSelect_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-
 		System::Windows::Forms::ToolTip^ toolTip1 = gcnew System::Windows::Forms::ToolTip();
 		toolTip1->SetToolTip(dTPSelect, "Оберіть час та дату прийому");
 	}
 	private: System::Void NewRecordForm_HelpRequested(System::Object^ sender, System::Windows::Forms::HelpEventArgs^ hlpevent) {
-
 		// Текст допомоги або пояснення для форми NewRecordForm
 		String^ helpText = "Ця форма дозволяє користувачам записуватися до лікаря, обирати спеціалізацію, дату та час прийому, а також залишати коментарі щодо свого самопочуття.\n";
 		helpText += "Оберіть тип клініки (приватна або державна), район, спеціалізацію лікаря та дату прийому.\n";
@@ -430,10 +609,108 @@ namespace mainProject {
 
 		// Показати MessageBox із текстом допомоги
 		MessageBox::Show(helpText, "Довідка", MessageBoxButtons::OK, MessageBoxIcon::Information);
-
 	}
 
 	private: System::Void NewRecordForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
+
+	private: System::Void cLbHospital_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+
+	private: System::Void dTPSelect_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+		   //Знайти доступних лікарів(кнопка)
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		System::Collections::Generic::List<System::String^>^ checkedDocTypes = gcnew System::Collections::Generic::List<System::String^>();
+
+
+
+		std::vector<Hospital> hospitals = read_hospitaltable();
+		std::vector<Doctor> doctors = read_doctortable();
+
+		DateTime^ dateTime = dTPSelect->Value;
+		int hour = dateTime->Hour;
+		int minute = dateTime->Minute;
+		int second = dateTime->Second;
+		DayOfWeek dayOfWeek = dateTime->DayOfWeek;
+		int idHospital;
+		
+		//БОЛЬНИЧКА РАБОТАЕМ
+		if (cLbHospital->CheckedIndices->Count > 0)
+		{
+			int checkedIndex = cLbHospital->CheckedIndices[0];
+			System::String^ selectedHospital = cLbHospital->Items[checkedIndex]->ToString();
+
+
+			for (size_t j = 0; j < hospitals.size(); j++)
+			{
+				// Если имя больницы совпадает с выбранным элементом
+				if (ParseToNETstring(hospitals[j].hospitalName) == selectedHospital)
+				{
+					//Получаем id больницы
+					idHospital = hospitals[j].hospitalID;
+					break;
+				}
+
+			}
+		}
+
+		//ЧИТАЕМ ЧЕК БОКС СПЕЦИАЛЬНОСТЕЙ
+		for (int i = 0; i < cLbDocType->CheckedItems->Count; i++)
+		{
+			// Добавляем строковое значение отмеченного элемента в список
+			checkedDocTypes->Add(cLbDocType->CheckedItems[i]->ToString());
+		}
+
+		//ДОКТОРА ЗАПИСЬ В ЧЕКБОКС
+		cLbDoc->Items->Clear();
+		// Перебираем всех докторов в списке
+	// Перебираем всех докторов в списке
+		for (size_t i = 0; i < doctors.size(); i++)
+		{
+			// Если место работы доктора совпадает с id больницы
+			if (doctors[i].docWorkPlace == idHospital)
+			{
+				// Преобразуем DayOfWeek в строку
+				String^ dayOfWeekStr = Enum::GetName(DayOfWeek::typeid, dayOfWeek);
+
+				// Преобразуем std::string в System::String^ для сравнения
+				System::String^ workingDays = gcnew System::String(doctors[i].docWorkingDays.c_str());
+
+				// Проверяем, работает ли врач в этот день недели
+				if (workingDays->Contains(dayOfWeekStr))
+				{
+					// Проверяем, что выбранное время входит в рабочие часы врача
+					bool isWorkingHour = hour > doctors[i].docWorkingHoursStart.tm_hour &&
+						hour < doctors[i].docWorkingHoursEnd.tm_hour;
+					bool isWorkingStartMinute = hour == doctors[i].docWorkingHoursStart.tm_hour &&
+						minute >= doctors[i].docWorkingHoursStart.tm_min;
+					bool isWorkingEndMinute = hour == doctors[i].docWorkingHoursEnd.tm_hour &&
+						minute <= doctors[i].docWorkingHoursEnd.tm_min;
+
+					if (isWorkingHour || isWorkingStartMinute || isWorkingEndMinute)
+					{
+						for each (System::String ^ type in checkedDocTypes)
+						{
+							if (ParseToNETstring(doctors[i].docSpeciality) == type)
+							{
+								// Добавляем доктора в CheckedListBox
+								std::string fullName = doctors[i].docName + " " + doctors[i].docSurname + " " +
+									doctors[i].docMiddleName + " " + doctors[i].docSpeciality;
+
+								cLbDoc->Items->Add(gcnew System::String(fullName.c_str()));
+							}
+						}
+					}
+				}
+			}
+		}
+
+		
+
+
+
 	}
 	};
 }

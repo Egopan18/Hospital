@@ -1,11 +1,16 @@
-﻿  Algorithms.cpp
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Algorithms.cpp(70,24): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Algorithms.cpp(91,19): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Algorithms.cpp(95,26): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-  SignForm.cpp
-  StartForm.cpp
-  Создание кода...
-F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Algorithms.cpp(21): warning C4715: ParseToString: значение возвращается не при всех путях выполнения
+﻿  Data.cpp
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(60): warning C4715: get_filetype: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(323): warning C4715: User::read_userrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(383): warning C4715: Hospital::read_hospitalrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(601): warning C4715: Doctor::get_workingdays: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(745): warning C4715: Doctor::read_doctorrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1743): warning C4715: read_doctortable: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(275): warning C4715: User::read_userrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(435): warning C4715: Hospital::read_hospitalrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(685): warning C4715: Doctor::read_doctorrow: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1331): warning C4715: read_usertable: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1479): warning C4715: read_hospitaltable: значение возвращается не при всех путях выполнения
+F:\Пользователи\paneg\OneDrive\Рабочий стол\Учеба\2 Курс\КурсоваРобота\Hospital\mainProject\mainProject\Data.cpp(1686): warning C4715: read_doctortable: значение возвращается не при всех путях выполнения
   pugixml.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
 mysqlcppconn-static.lib(mysql_art_resultset.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_art_resultset.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
 mysqlcppconn-static.lib(mysql_prepared_statement.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_prepared_statement.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных

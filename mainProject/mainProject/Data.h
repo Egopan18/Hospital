@@ -63,7 +63,9 @@ public:
 	bool hospitalIsPrivate;//0 - государственная, 1 - частная;
 	std::string hospitalAddress;
 	std::string hospitalName;
+	std::string hospitalRegion;
 	int hospitalRating;
+	
 
 	Hospital();
 
@@ -133,6 +135,7 @@ public:
 	int clientID;
 	int doctorID;
 	tm date;
+	tm timedate = {};
 	bool visitStatus;
 	std::string diagnosis;
 	std::string prescription;

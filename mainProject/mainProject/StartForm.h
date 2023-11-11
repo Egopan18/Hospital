@@ -16,6 +16,8 @@ namespace mainProject {
 	/// <summary>
 	/// Summary for StartForm
 	/// </summary>
+	/// 	
+
 	public ref class StartForm : public System::Windows::Forms::Form
 	{
 	public:
@@ -255,6 +257,7 @@ namespace mainProject {
 			Hash obj;
 			int i = 3;
 			std::vector<User> UsVec1 = read_usertable();
+			std::vector<User> UsDate;
 			System::String^ NowNumber = TbTel->Text;
 			System::String^ NowPassword = mTbPassw->Text;
 			std::string Phone_Number = ParseToString(NowNumber);
@@ -264,6 +267,13 @@ namespace mainProject {
 			bool passwordExists = false;
 			std::string hashPassword;
 			hashPassword = obj.getHash(Password, 6);
+			//Якщо користувач нічого не ввів
+			//if (Phone_Number.length() == 0 || Password.length() == 0)
+			//{
+			//	//Треба зробити викид якогось повідомлення.
+			//	Console::WriteLine("Write password or login");
+			//	return;
+			//}
 			//Записуємо номера
 			for (const User& user : UsVec1)
 			{
@@ -271,6 +281,7 @@ namespace mainProject {
 				if (Phone_Number == user.userPhone)
 				{
 					phoneNumberExists = true;
+					int userId = user.userID;
 					break;
 				}
 			}
@@ -286,8 +297,18 @@ namespace mainProject {
 			//Якщо користувач є в базі
 			if (phoneNumberExists && passwordExists)
 			{
+				User user1;
+				System::String^ Pass = ParseToNETstring(Password);
+				for (const User& user : UsVec1)
+				{
+					if (Phone_Number == user.userPhone && hashPassword == user.userPassword)
+					{
+						user1 = user;
+						break;
+					}
+				}
 				// Створюємо новий екземпляр форми LogForm
-				LogForm^ logForm = gcnew LogForm();
+				LogForm^ logForm = gcnew LogForm(user1, Pass);
 
 				// Ховаємо поточну форму
 				this->Hide();

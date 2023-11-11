@@ -1144,10 +1144,11 @@ void Visit::write_visitrow()
 	{
 		if (connect_todb())
 		{
-			std::string query = "INSERT INTO visit (clientID, doctorID, date, visitStatus, diagnosis, prescription) VALUES ("
+			std::string query = "INSERT INTO visit (clientID, doctorID, date, timedate, visitStatus, diagnosis, prescription) VALUES ("
 				+ std::to_string(clientID) + ", "
 				+ std::to_string(doctorID) + ", '"
 				+ std::to_string(date.tm_year + 1900) + "-" + std::to_string(date.tm_mon + 1) + "-" + std::to_string(date.tm_mday) + "', "
+				+ std::to_string(timedate.tm_hour) + ":" + std::to_string(timedate.tm_min) + ":" + std::to_string(timedate.tm_sec) + ", "
 				+ (visitStatus ? "1" : "0") + ", '"
 				+ diagnosis + "', '"
 				+ prescription + "')";
@@ -1168,10 +1169,10 @@ void Visit::write_visitrow()
 				"clientID = " + std::to_string(clientID) + ", "
 				"doctorID = " + std::to_string(doctorID) + ", "
 				"date = '" + std::to_string(date.tm_year + 1900) + "-" + std::to_string(date.tm_mon + 1) + "-" + std::to_string(date.tm_mday) + "', "
+				"datetime = '" + std::to_string(date.tm_hour) + ":" + std::to_string(date.tm_min) + ":" + std::to_string(date.tm_sec) + ", "
 				"visitStatus = " + (visitStatus ? "1" : "0") + ", "
 				"diagnosis = '" + diagnosis + "', "
 				"prescription = '" + prescription + "' WHERE visitID = " + std::to_string(visitID);
-
 			execute_query(query);
 			close_connection();
 		}
@@ -1229,7 +1230,7 @@ std::vector<User> read_usertable()
 			std::string tempdate = res->getString("userBirthDate");
 			user.userBirthDate.tm_year -= 1900;
 			user.userBirthDate.tm_mon -= 1;
-
+			
 			users.push_back(user);
 		}
 
@@ -1493,6 +1494,7 @@ std::vector<Hospital> read_hospitaltable()
 			tmp.hospitalAddress = res->getString("hospitalAddress");
 			tmp.hospitalName = res->getString("hospitalName");
 			tmp.hospitalRating = res->getInt("hospitalRating");
+			tmp.hospitalRegion = res->getString("hospitalRegion");
 
 			hosps.push_back(tmp);
 		}
@@ -1700,7 +1702,7 @@ std::vector<Doctor> read_doctortable()
 			tmp.docMiddleName = res->getString("docMiddleName");
 			tmp.docSpeciality = res->getString("docSpeciality");
 			tmp.docWorkingDays = tmp.get_workingdays(tmp.docID);
-
+			tmp.docWorkPlace = res->getInt("docWorkPlace");
 			//парсинг даты
 			std::string employmentDateStr = res->getString("docEmploymentDate");
 			if (sscanf_s(employmentDateStr.c_str(), "%d-%d-%d", &tmp.docEmploymentDate.tm_year, &tmp.docEmploymentDate.tm_mon, &tmp.docEmploymentDate.tm_mday) == 3)
@@ -1901,6 +1903,8 @@ std::vector<Visit> read_visittable()
 				if (sscanf_s(res->getString("visitDate").c_str(), "%d-%d-%d", &tmp.date.tm_year, &tmp.date.tm_mon, &tmp.date.tm_mday) == 3) {
 					//tmp.date.tm_mon -= 1;
 				}
+				std::string time = res->getString("visitTime");
+				sscanf_s(time.c_str(), "%d:%d:%d", &tmp.timedate.tm_hour, &tmp.timedate.tm_min, &tmp.timedate.tm_sec);
 				tmp.visitStatus = res->getBoolean("visitStatus");
 				tmp.diagnosis = res->getString("diagnosis");
 				tmp.prescription = res->getString("prescription");

@@ -19,14 +19,30 @@ std::string ParseToString(System::Object^ data)
 	}
 	
 }
-std::tm ParseToTm(System::DateTime^ date)
+std::tm ParseToTm(System::DateTime^ data)
 {
 	std::tm Date = {};
-	Date.tm_year = date->Year - 1900;
-	Date.tm_mon = date->Month - 1;
-	Date.tm_mday = date->Day;
+	Date.tm_year = data->Year - 1900;
+	Date.tm_mon = data->Month - 1;
+	Date.tm_mday = data->Day;
 
 	return Date;
+}
+System::String^ ParseToNETstring(std::string data)
+{
+	System::String^ parse_data = msclr::interop::marshal_as<System::String^>(data);
+	return parse_data;
+
+}
+System::DateTime^ ConvertToDateTime(std::tm dateInfo)
+{
+	// Calculate the year, month, and day based on tm structure
+	int year = dateInfo.tm_year + 1900;   // tm_year is years since 1900
+	int month = dateInfo.tm_mon + 1;       // tm_mon is 0-based month
+	int day = dateInfo.tm_mday;
+
+	// Create a System::DateTime object
+	return gcnew System::DateTime(year, month, day);
 }
 //Функції хешування паролю
 int Hash::receivingCodes(int x)

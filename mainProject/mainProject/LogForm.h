@@ -1,25 +1,34 @@
 #pragma once
-
+#include "Data.h"
+#include "Algorithms.h"
 #include "NewRecordForm.h"
+#include <ctime>
 
 namespace mainProject {
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
+	
 	/// <summary>
 	/// Summary for LogForm
 	/// </summary>
+	/// 
+	static User us;
+
 	public ref class LogForm : public System::Windows::Forms::Form
 	{
+		
 	public:
-		LogForm(void)
+		System::String^ pass;
+		LogForm(User& user, String^ password)
 		{
+			
 			InitializeComponent();
+			us = user;
+			pass = password;
 			//
 			//TODO: Add the constructor code here
 			//
@@ -39,21 +48,14 @@ namespace mainProject {
 	private: System::Windows::Forms::MonthCalendar^ monthCalendar;
 	private: System::Windows::Forms::ComboBox^ CbLast;
 
-
-
-
 	private: System::Windows::Forms::Label^ lFio;
 
 	private: System::Windows::Forms::Label^ lTel;
 	private: System::Windows::Forms::Label^ lAge;
 
-
-
-
 	private: System::Windows::Forms::CheckBox^ CbShow;
 	private: System::Windows::Forms::MaskedTextBox^ mTbPassw;
 	private: System::Windows::Forms::Label^ lPassw;
-
 
 	private: System::Windows::Forms::Label^ lLast;
 	private: System::Windows::Forms::Label^ lFuture;
@@ -83,17 +85,14 @@ namespace mainProject {
 	private: System::Windows::Forms::Label^ linfo;
 	private: System::Windows::Forms::PictureBox^ piсBox;
 
-
-
-
 	protected:
-
 
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		System::ComponentModel::Container^ components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -245,6 +244,7 @@ namespace mainProject {
 			this->lShowData->Size = System::Drawing::Size(84, 18);
 			this->lShowData->TabIndex = 22;
 			this->lShowData->Text = L"Ваші дані : ";
+			this->lShowData->Click += gcnew System::EventHandler(this, &LogForm::lShowData_Click);
 			// 
 			// dateBith
 			// 
@@ -278,6 +278,7 @@ namespace mainProject {
 			this->TbTel->Name = L"TbTel";
 			this->TbTel->Size = System::Drawing::Size(108, 20);
 			this->TbTel->TabIndex = 26;
+			this->TbTel->TextChanged += gcnew System::EventHandler(this, &LogForm::TbTel_TextChanged);
 			// 
 			// TbName
 			// 
@@ -286,6 +287,7 @@ namespace mainProject {
 			this->TbName->Name = L"TbName";
 			this->TbName->Size = System::Drawing::Size(108, 20);
 			this->TbName->TabIndex = 25;
+			this->TbName->TextChanged += gcnew System::EventHandler(this, &LogForm::TbName_TextChanged);
 			// 
 			// TbDocPatr
 			// 
@@ -460,8 +462,9 @@ namespace mainProject {
 		}
 #pragma endregion
 	private: System::Void bSingUp_Click(System::Object^ sender, System::EventArgs^ e) {
-		// Створюємо новий екземпляр форми 
-		NewRecordForm^ newRecordForm = gcnew NewRecordForm();
+		// Створюємо новий екземпляр форми
+		NewRecordForm^ newRecordForm = gcnew NewRecordForm(TbTel->Text);
+		
 		// Показуємо нову форму
 		newRecordForm->Show();
 	}
@@ -511,8 +514,40 @@ namespace mainProject {
 	}
 
 	private: System::Void LogForm_Load(System::Object^ sender, System::EventArgs^ e) {
+		
+		System::String^ name = ParseToNETstring(us.userName);
+		System::String^ surname = ParseToNETstring(us.userSurname);
+		System::String^ middlename = ParseToNETstring(us.userMiddleName);
+		System::String^ phone = ParseToNETstring(us.userPhone);
+		//if (us.userBirthDate.tm_year > 0) {
+		//	System::DateTime dateTime(
+		//		us.userBirthDate.tm_year + 1900,  
+		//		us.userBirthDate.tm_mon + 1,      
+		//		us.userBirthDate.tm_mday          
+		//	);
+		//	dateBith->Value = dateTime;
+		//	
+		//}
+		//else {
+		//	Console::WriteLine("Error");
+		//}
+
+
+		TbName->Text = name;
+		TbSurn->Text = surname;
+		TbPatr->Text = middlename;
+		TbTel->Text = phone;
+		mTbPassw->Text = pass;
+		
 	}
 	private: System::Void gBFamDoc_Enter(System::Object^ sender, System::EventArgs^ e) {
 	}
-	};
+	private: System::Void TbName_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void lShowData_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+private: System::Void TbTel_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+}
+};
+
 }
