@@ -1,11 +1,11 @@
-#pragma once
+п»ї#pragma once
 
 #include "Data.h"
 
 const std::string dbHost = "tcp://127.0.0.1:3306";
 const std::string dbUser = "root";
-const std::string dbPassword = "Izehod91!"; //поменяйте это на свой пароль. Остальное по идее будет таким же
-const std::string dbName = "hospitaldb";
+const std::string dbPassword = "Izehod91!"; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ
+const std::string dbName = "newschema";
 sql::mysql::MySQL_Driver* driver;
 sql::Connection* con;
 
@@ -75,6 +75,7 @@ User::User()
 	userBirthDate.tm_year = 2000;
 	userBirthDate.tm_mon = 0;
 	userBirthDate.tm_mday = 1;
+	userFamilyDoctor = 1;
 }
 
 void User::write_userrow()
@@ -91,13 +92,13 @@ void User::write_userrow()
 
 		if (userID == 0)
 		{
-			// если юзерайди==0 - создание нового, иначе - обновление существующего //мб стоит поменять в таких функциях 0 на что-то типа 9999, но мне лень, а таблицы в бд начинаются с 1.
-			prep_stmt = con->prepareStatement("INSERT INTO user (userAge, userName, userSurname, userMiddleName, userPhone, userPassword, userBirthDate) VALUES (?, ?, ?, ?, ?, ?, ?)");
+			// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ==0 - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ //пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 0 пїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅ 9999, пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 1.
+			prep_stmt = con->prepareStatement("INSERT INTO user (userAge, userName, userSurname, userMiddleName, userPhone, userPassword, userBirthDate, userFamilyDoctor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		}
 		else
 		{
-			prep_stmt = con->prepareStatement("UPDATE user SET userAge = ?, userName = ?, userSurname = ?, userMiddleName = ?, userPhone = ?, userPassword = ? userBirthDate = ? WHERE userID = ?");
-			prep_stmt->setInt(7, userID);
+			prep_stmt = con->prepareStatement("UPDATE user SET userAge = ?, userName = ?, userSurname = ?, userMiddleName = ?, userPhone = ?, userPassword = ? userBirthDate = ? userFamilyDoctor=? WHERE userID = ?");
+			prep_stmt->setInt(9, userID);
 		}
 		char dateStr[11]; // "YYYY-MM-DD\0"
 		std::strftime(dateStr, 11, "%Y-%m-%d", &userBirthDate);
@@ -109,6 +110,8 @@ void User::write_userrow()
 		prep_stmt->setString(5, userPhone);
 		prep_stmt->setString(6, userPassword);
 		prep_stmt->setDateTime(7, dateStr);
+		prep_stmt->setInt(8, userFamilyDoctor);
+
 
 		prep_stmt->execute();
 
@@ -146,6 +149,7 @@ void User::write_userrow(const std::string& Filename)
 		userNode["userBirthYear"] = userBirthDate.tm_year;
 		userNode["userBirthMon"] = userBirthDate.tm_mon;
 		userNode["userBirthDay"] = userBirthDate.tm_mday;
+		userNode["userFamilyDoctor"] = userFamilyDoctor;
 
 		if (jsonData.is_array())
 		{
@@ -181,6 +185,7 @@ void User::write_userrow(const std::string& Filename)
 			userNode.append_child("userBirthYear").text().set(userBirthDate.tm_year);
 			userNode.append_child("userBirthMon").text().set(userBirthDate.tm_mon);
 			userNode.append_child("userBirthDay").text().set(userBirthDate.tm_mday);
+			userNode.append_child("userFamilyDoctor").text().set(userFamilyDoctor);
 		}
 		else
 		{
@@ -197,6 +202,7 @@ void User::write_userrow(const std::string& Filename)
 			userNode.append_child("userBirthYear").text().set(userBirthDate.tm_year);
 			userNode.append_child("userBirthMon").text().set(userBirthDate.tm_mon);
 			userNode.append_child("userBirthDay").text().set(userBirthDate.tm_mday);
+			userNode.append_child("userFamilyDoctor").text().set(userFamilyDoctor);
 		}
 
 		if (doc.save_file(Filename.c_str()))
@@ -235,6 +241,7 @@ User User::read_userrow(int userID, const std::string& Filename)
 					this->userBirthDate.tm_year = userNode["userBirthYear"];
 					this->userBirthDate.tm_mon = userNode["userBirthMon"];
 					this->userBirthDate.tm_mday = userNode["userBirthDay"];
+					this->userFamilyDoctor = userNode["userFamilyDoctor"];
 
 					User ret = *this;
 					return ret;
@@ -264,6 +271,7 @@ User User::read_userrow(int userID, const std::string& Filename)
 					this->userBirthDate.tm_year = userNode.child("userBirthYear").text().as_int();
 					this->userBirthDate.tm_mon = userNode.child("userBirthMon").text().as_int();
 					this->userBirthDate.tm_mday = userNode.child("userBirthDay").text().as_int();
+					this->userFamilyDoctor = userNode.child("userFamilyDoctor").text().as_int();
 
 					User ret = *this;
 					return ret;
@@ -296,13 +304,14 @@ User User::read_userrow(int userID)
 			userSurname = res->getString("userSurname");
 			userMiddleName = res->getString("userMiddleName");
 			userPhone = res->getString("userPhone");
-			// чтение даты как строки
+			// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			std::string BirthDateStr = res->getString("userBirthDate");
 
-			// парсер даты в, собственно, дату
+			// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ
 			if (sscanf_s(BirthDateStr.c_str(), "%d-%d-%d", &this->userBirthDate.tm_year, &this->userBirthDate.tm_mon, &this->userBirthDate.tm_mday) == 3) {
-				//this->docEmploymentDate.tm_mon -= 1; //не помню надо это или нет, бтв январь в sql это 0
+				//this->docEmploymentDate.tm_mon -= 1; //пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ sql пїЅпїЅпїЅ 0
 			}
+			userFamilyDoctor = res->getInt("userFamilyDoctor");
 
 			User ret = *this;
 			return ret;
@@ -322,7 +331,7 @@ User User::read_userrow(int userID)
 	}
 }
 
-void User::print_user() //я юзал это для тестов, можно убирать
+void User::print_user() //пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 {
 	std::cout << "User Information:" << std::endl;
 	std::cout << "User ID: " << userID << std::endl;
@@ -331,6 +340,7 @@ void User::print_user() //я юзал это для тестов, можно убирать
 	std::cout << "Middle Name: " << userMiddleName << std::endl;
 	std::cout << "Age: " << userAge << " years old" << std::endl;
 	std::cout << "Phone: " << userPhone << std::endl;
+	std::cout << "Family Doctor" << userFamilyDoctor << std::endl;
 }
 
 Hospital::Hospital()
@@ -363,6 +373,7 @@ Hospital Hospital::read_hospitalrow(int hospitalID)
 			hospitalAddress = res->getString("hospitalAddress");
 			hospitalName = res->getString("hospitalName");
 			hospitalRating = res->getInt("hospitalRating");
+			hospitalDistrict = res->getString("hospitalDistrict");
 
 			Hospital ret = *this;
 			return ret;
@@ -402,6 +413,8 @@ Hospital Hospital::read_hospitalrow(int hospitalID, const std::string& Filename)
 					this->hospitalAddress = hospitalNode["hospitalAddress"];
 					this->hospitalName = hospitalNode["hospitalName"];
 					this->hospitalRating = hospitalNode["hospitalRating"];
+					this->hospitalDistrict = hospitalNode["hospitalDistrict"];
+
 					Hospital ret = *this;
 					return ret;
 					break;
@@ -425,6 +438,7 @@ Hospital Hospital::read_hospitalrow(int hospitalID, const std::string& Filename)
 					this->hospitalAddress = hospNode.child("hospitalAddress").text().as_string();
 					this->hospitalName = hospNode.child("hospitalName").text().as_string();
 					this->hospitalRating = hospNode.child("hospitalRating").text().as_int();
+					this->hospitalDistrict = hospNode.child("hospitalDistrict").text().as_string();
 					Hospital ret = *this;
 					return ret;
 					break;
@@ -453,6 +467,7 @@ void Hospital::write_hospitalrow(const std::string& Filename)
 		hospNode["hospitalAddress"] = hospitalAddress;
 		hospNode["hospitalName"] = hospitalName;
 		hospNode["hospitalRating"] = hospitalRating;
+		hospNode["hospitalDistrict"] = hospitalDistrict;
 
 		if (jsonData.is_array())
 		{
@@ -483,6 +498,7 @@ void Hospital::write_hospitalrow(const std::string& Filename)
 			hospNode.append_child("hospitalAddress").text().set(hospitalAddress.c_str());
 			hospNode.append_child("hospitalName").text().set(hospitalName.c_str());
 			hospNode.append_child("hospitalRating").text().set(hospitalRating);
+			hospNode.append_child("hospitalDistrict").text().set(hospitalDistrict.c_str());
 		}
 		else
 		{
@@ -494,6 +510,7 @@ void Hospital::write_hospitalrow(const std::string& Filename)
 			hospNode.append_child("hospitalAddress").text().set(hospitalAddress.c_str());
 			hospNode.append_child("hospitalName").text().set(hospitalName.c_str());
 			hospNode.append_child("hospitalRating").text().set(hospitalRating);
+			hospNode.append_child("hospitalDistrict").text().set(hospitalDistrict.c_str());
 		}
 
 		if (doc.save_file(Filename.c_str()))
@@ -521,18 +538,19 @@ void Hospital::write_hospitalrow()
 
 		if (hospitalID == 0)
 		{
-			prep_stmt = con->prepareStatement("INSERT INTO hospital (hospitalIsPrivate, hospitalAddress, hospitalName, hospitalRating) VALUES (?, ?, ?, ?)");
+			prep_stmt = con->prepareStatement("INSERT INTO hospital (hospitalIsPrivate, hospitalAddress, hospitalName, hospitalRating, hospitalDistrict) VALUES (?, ?, ?, ?, ?)");
 		}
 		else
 		{
-			prep_stmt = con->prepareStatement("UPDATE hospital SET hospitalIsPrivate = ?, hospitalAddress = ?, hospitalName = ?, hospitalRating = ? WHERE hospitalID = ?");
-			prep_stmt->setInt(5, hospitalID);
+			prep_stmt = con->prepareStatement("UPDATE hospital SET hospitalIsPrivate = ?, hospitalAddress = ?, hospitalName = ?, hospitalRating = ? hospitalDistrict=? WHERE hospitalID = ?");
+			prep_stmt->setInt(6, hospitalID);
 		}
 
 		prep_stmt->setBoolean(1, hospitalIsPrivate);
 		prep_stmt->setString(2, hospitalAddress);
 		prep_stmt->setString(3, hospitalName);
 		prep_stmt->setInt(4, hospitalRating);
+		prep_stmt->setString(5, hospitalDistrict);
 
 		prep_stmt->execute();
 
@@ -546,7 +564,7 @@ void Hospital::write_hospitalrow()
 	}
 }
 
-void Hospital::print_hospital()//можно убирать
+void Hospital::print_hospital()//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 {
 	std::cout << hospitalID << "\n" << hospitalAddress << "\n" << hospitalName << "\n" << hospitalRating << "\n" << hospitalIsPrivate << "\n\n";
 }
@@ -564,11 +582,12 @@ Doctor::Doctor()
 	docExpirienceYears = 1;
 	docRating = 5;
 	docMaxDayClients = 1;
-	docWorkingDays = "Monday, Wednesday, Friday"; //при записи дней работы всегда используйте аналогичный формат т.к. парсер разделяет дни по запятым
+	docWorkingDays = "Monday, Wednesday, Friday"; //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ.пїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	docWorkingHoursStart.tm_hour = 8;
 	docWorkingHoursEnd.tm_hour = 17;
 	docReviews = "DefReview";
 	docWorkPlace = 1;
+	//docContracts = { 0 };
 }
 
 std::string Doctor::get_workingdays(int docID)
@@ -598,6 +617,47 @@ std::string Doctor::get_workingdays(int docID)
 	{
 		std::cerr << "Error reading hospital data: " << e.what() << std::endl;
 	}
+}
+
+std::vector<int> Doctor::getContracts(int doctorID, std::vector<User> users)
+{
+	std::vector<int> contracts;
+	for (User i : users)
+	{
+		if (i.userFamilyDoctor == this->docID) contracts.push_back(i.userID);
+	}
+	//docContracts = contracts;
+	return contracts;
+}
+
+std::vector<int> Doctor::getContractsDB(int doctorID)
+{
+	std::vector<int> contracts;
+
+	if (connect_todb())
+	{
+		std::string query = "SELECT user.userID FROM user "
+			"JOIN doctor ON user.doctorID = doctor.doctorID "
+			"WHERE doctor.doctorID = " + std::to_string(doctorID);
+
+		if (execute_query(query)) {
+			sql::ResultSet* res;
+			sql::Statement* stmt = con->createStatement();
+			res = stmt->executeQuery(query);
+
+			while (res->next())
+			{
+				contracts.push_back(res->getInt("userID"));
+			}
+
+			delete res;
+			delete stmt;
+		}
+
+		close_connection();
+	}
+
+	return contracts;
 }
 
 Doctor Doctor::read_doctorrow(int doctorID, const std::string& Filename)
@@ -631,7 +691,7 @@ Doctor Doctor::read_doctorrow(int doctorID, const std::string& Filename)
 					this->docWorkingHoursStart.tm_min = docNode["docWorkingHoursStartMin"];
 					this->docWorkingHoursEnd.tm_hour = docNode["docWorkingHoursEndHour"];
 					this->docWorkingHoursEnd.tm_min = docNode["docWorkingHoursEndMin"];
-
+					//TODO reading contracts
 					this->docReviews = docNode["docReviews"];
 					this->docWorkPlace = docNode["docWorkPlace"];
 					Doctor ret = *this;
@@ -671,7 +731,7 @@ Doctor Doctor::read_doctorrow(int doctorID, const std::string& Filename)
 					this->docWorkingHoursStart.tm_min = docNode.child("docWorkingHoursStartMin").text().as_int();
 					this->docWorkingHoursEnd.tm_hour = docNode.child("docWorkingHoursEndHour").text().as_int();
 					this->docWorkingHoursEnd.tm_min = docNode.child("docWorkingHoursEndMin").text().as_int();
-
+					//TODO reading contracts
 					this->docReviews = docNode.child_value("docReviews");
 					this->docWorkPlace = docNode.child("docWorkPlace").text().as_int();
 
@@ -707,13 +767,14 @@ Doctor Doctor::read_doctorrow(int doctorID)
 			this->docMiddleName = res->getString("docMiddleName");
 			this->docSpeciality = res->getString("docSpeciality");
 			this->docWorkingDays = this->get_workingdays(this->docID);
+			//TODO reading contracts
 
-			// чтение даты как строки
+			// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			std::string employmentDateStr = res->getString("docEmploymentDate");
 
-			// парсер даты в, собственно, дату
+			// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ
 			if (sscanf_s(employmentDateStr.c_str(), "%d-%d-%d", &this->docEmploymentDate.tm_year, &this->docEmploymentDate.tm_mon, &this->docEmploymentDate.tm_mday) == 3) {
-				//this->docEmploymentDate.tm_mon -= 1; //не помню надо это или нет, бтв январь в sql это 0
+				//this->docEmploymentDate.tm_mon -= 1; //пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ sql пїЅпїЅпїЅ 0
 			}
 
 			std::string workstart = res->getString("docWorkingHoursStart");
@@ -777,6 +838,7 @@ void Doctor::write_doctorrow(const std::string& Filename)
 		docNode["docWorkingHoursEndMin"] = this->docWorkingHoursEnd.tm_min;
 		docNode["docReviews"] = this->docReviews;
 		docNode["docWorkPlace"] = this->docWorkPlace;
+		//TODO writing contracts
 
 		if (jsonData.is_array())
 		{
@@ -802,7 +864,7 @@ void Doctor::write_doctorrow(const std::string& Filename)
 			pugi::xml_node root = doc.child("doctors");
 			pugi::xml_node docNode = root.append_child("doctor");
 
-			//какая де боль была всё это прописывать. Впрочем половину таких блоков писал чат шапито
+			//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			docNode.append_attribute("docID").set_value(this->docID);
 			docNode.append_child("docName").text().set(this->docName.c_str());
 			docNode.append_child("docSurname").text().set(this->docSurname.c_str());
@@ -821,6 +883,7 @@ void Doctor::write_doctorrow(const std::string& Filename)
 			docNode.append_child("docWorkingHoursStartMin").text().set(this->docWorkingHoursStart.tm_min);
 			docNode.append_child("docWorkingHoursEndHour").text().set(this->docWorkingHoursEnd.tm_hour);
 			docNode.append_child("docWorkingHoursEndMin").text().set(this->docWorkingHoursEnd.tm_min);
+			//TODO writing contracts
 		}
 		else
 		{
@@ -845,6 +908,8 @@ void Doctor::write_doctorrow(const std::string& Filename)
 			docNode.append_child("docWorkingHoursStartMin").text().set(this->docWorkingHoursStart.tm_min);
 			docNode.append_child("docWorkingHoursEndHour").text().set(this->docWorkingHoursEnd.tm_hour);
 			docNode.append_child("docWorkingHoursEndMin").text().set(this->docWorkingHoursEnd.tm_min);
+			//TODO writing contracts
+
 		}
 
 		if (doc.save_file(Filename.c_str()))
@@ -860,12 +925,12 @@ void Doctor::write_doctorrow(const std::string& Filename)
 
 void Doctor::write_doctorrow()
 {
-	//иногда эта функция не работала, но сейчас всё должно быть норм
+	//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	try
 	{
 		sql::PreparedStatement* prep_stmt;
 
-		// если доктор с this->docID уже есть в бд - ряд обновляется, если нет - создаётся новый ряд.
+		// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ this->docID пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.
 		if (docID != 0)
 		{
 			prep_stmt = con->prepareStatement("UPDATE doctor SET docName=?, docSurname=?, docMiddleName=?, docSpeciality=?, docEmploymentDate=?, docExpirienceYears=?, docRating=?, docMaxDayClients=?, docWorkingDays=?, docWorkingHoursStart=?, docWorkingHoursEnd=?, docReviews=?, docWorkPlace=? WHERE docID=?");
@@ -898,6 +963,7 @@ void Doctor::write_doctorrow()
 		prep_stmt->setString(11, endTimeStr);
 		prep_stmt->setString(12, docReviews);
 		prep_stmt->setInt(13, docWorkPlace);
+		//TODO writing contracts
 
 		prep_stmt->execute();
 		delete prep_stmt;
@@ -911,7 +977,7 @@ void Doctor::write_doctorrow()
 	}
 }
 
-void Doctor::print_doctor()//можно убирать
+void Doctor::print_doctor()//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 {
 	std::cout << "Doctor Information:" << std::endl;
 	std::cout << "docID: " << docID << std::endl;
@@ -936,11 +1002,14 @@ Visit::Visit()
 	this->clientID = 0;
 	this->doctorID = 0;
 	this->prescription = "Defprescription";
-	this->date.tm_year = 2000;
-	this->date.tm_mon = 0;
-	this->date.tm_mday = 1;
+	this->visitDate.tm_year = 2000;
+	this->visitDate.tm_mon = 0;
+	this->visitDate.tm_mday = 1;
 	this->diagnosis = "DefDiagnosis";
 	this->visitStatus = 0;
+	this->visitTime.tm_hour = 1;
+	this->visitTime.tm_min = 1;
+	this->visitTime.tm_sec = 0;
 }
 
 Visit Visit::read_visitrow(int visitID, const std::string& Filename)
@@ -960,7 +1029,7 @@ Visit Visit::read_visitrow(int visitID, const std::string& Filename)
 		else
 		{
 			std::cerr << "Failed to open JSON file: " << Filename << std::endl;
-			return visit; // если файла не существует возвращается дефолтный объект
+			return visit; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		}
 
 		for (const auto& record : jsonData)
@@ -970,12 +1039,14 @@ Visit Visit::read_visitrow(int visitID, const std::string& Filename)
 				visit.visitID = record["visitID"];
 				visit.clientID = record["clientID"];
 				visit.doctorID = record["doctorID"];
-				visit.date.tm_year = record["dateyear"];
-				visit.date.tm_mon = record["datemon"];
-				visit.date.tm_mday = record["dateday"];
+				visit.visitDate.tm_year = record["visitDateYear"];
+				visit.visitDate.tm_mon = record["visitDateMon"];
+				visit.visitDate.tm_mday = record["visitDateDay"];
 				visit.visitStatus = record["visitStatus"];
 				visit.diagnosis = record["diagnosis"];
 				visit.prescription = record["prescription"];
+				visit.visitTime.tm_hour = record["visitHour"];
+				visit.visitTime.tm_min = record["visitMinute"];
 				return visit;
 			}
 		}
@@ -994,21 +1065,21 @@ Visit Visit::read_visitrow(int visitID, const std::string& Filename)
 				if (visitNode.attribute("visitID").as_int() == visitID)
 				{
 					visit.visitID = visitNode.attribute("visitID").as_int();
-					visit.clientID = visitNode.attribute("clientID").as_int();
-					visit.doctorID = visitNode.attribute("doctorID").as_int();
+					visit.clientID = visitNode.child("clientID").text().as_int();
+					visit.doctorID = visitNode.child("doctorID").text().as_int();
 					visit.visitStatus = visitNode.child("visitStatus").text().as_bool();
 					visit.diagnosis = visitNode.child("diagnosis").text().get();
 					visit.prescription = visitNode.child("prescription").text().get();
-
-					visit.docEmploymentDate.tm_year = visitNode.child("docEmpYear").text().as_int();
-					visit.docEmploymentDate.tm_mon = visitNode.child("docEmpMon").text().as_int();
-					visit.docEmploymentDate.tm_mday = visitNode.child("docEmpDay").text().as_int();
+					visit.visitTime.tm_hour = visitNode.child("visitHour").text().as_int();
+					visit.visitTime.tm_min = visitNode.child("visitMinute").text().as_int();
+					visit.visitDate.tm_year = visitNode.child("visitDateYear").text().as_int();
+					visit.visitDate.tm_mon = visitNode.child("visitDateMon").text().as_int();
+					visit.visitDate.tm_mday = visitNode.child("visitDateDay").text().as_int();
 
 					*this = visit;
 					return visit;
 				}
 			}
-
 			return visit;
 		}
 		else
@@ -1045,17 +1116,20 @@ Visit Visit::read_visitrow(int visitID)
 					this->diagnosis = res->getString("diagnosis");
 					this->prescription = res->getString("prescription");
 
+					std::string TimeStr = res->getString("visitTime");
+					if (sscanf_s(TimeStr.c_str(), "%d-%d", &this->visitTime.tm_hour, &this->visitTime.tm_min) == 3) {}
+
 					std::string DateStr = res->getString("visitDate");
-					if (sscanf_s(DateStr.c_str(), "%d-%d-%d", &this->date.tm_year, &this->date.tm_mon, &this->date.tm_mday) == 3)
+					if (sscanf_s(DateStr.c_str(), "%d-%d-%d", &this->visitDate.tm_year, &this->visitDate.tm_mon, &this->visitDate.tm_mday) == 3)
 					{
-						//this->docEmploymentDate.tm_mon -= 1;     // может понадобиться
+						//this->docEmploymentDate.tm_mon -= 1;     // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 					}
 
 					visit = *this;
 				}
 				else
 				{
-					std::cerr << "Failed to parse date from the database." << std::endl;
+					std::cerr << "Failed to parse visitDate from the database." << std::endl;
 				}
 
 				delete res;
@@ -1092,12 +1166,14 @@ void Visit::write_visitrow(const std::string& Filename)
 		visitNode["visitID"] = visitID;
 		visitNode["clientID"] = clientID;
 		visitNode["doctorID"] = doctorID;
-		visitNode["DateYear"] = date.tm_year;
-		visitNode["DateMon"] = date.tm_mon;
-		visitNode["DateDay"] = date.tm_mday;
+		visitNode["visitDateYear"] = visitDate.tm_year;
+		visitNode["visitDateMon"] = visitDate.tm_mon;
+		visitNode["visitDateDay"] = visitDate.tm_mday;
 		visitNode["Diagnosis"] = diagnosis;
 		visitNode["Prescription"] = prescription;
 		visitNode["visitStatus"] = visitStatus;
+		visitNode["visitHour"] = visitTime.tm_hour;
+		visitNode["visitMinute"] = visitTime.tm_min;
 
 		jsonData.push_back(visitNode);
 
@@ -1127,11 +1203,13 @@ void Visit::write_visitrow(const std::string& Filename)
 					visitNode.append_attribute("visitID") = visitID;
 					visitNode.append_child("clientID").text().set(clientID);
 					visitNode.append_child("doctorID").text().set(doctorID);
-					visitNode.append_child("DateYear").text().set(date.tm_year);
-					visitNode.append_child("DateMon").text().set(date.tm_mon);
-					visitNode.append_child("DateDay").text().set(date.tm_mday);
+					visitNode.append_child("visitDateYear").text().set(visitDate.tm_year);
+					visitNode.append_child("visitDateMon").text().set(visitDate.tm_mon);
+					visitNode.append_child("visitDateDay").text().set(visitDate.tm_mday);
 					visitNode.append_child("diagnosis").text().set(diagnosis.c_str());
 					visitNode.append_child("prescription").text().set(prescription.c_str());
+					visitNode.append_child("visitHour").text().set(visitTime.tm_hour);
+					visitNode.append_child("visitMinute").text().set(visitTime.tm_min);
 				}
 			}
 		}
@@ -1144,11 +1222,11 @@ void Visit::write_visitrow()
 	{
 		if (connect_todb())
 		{
-			std::string query = "INSERT INTO visit (clientID, doctorID, date, timedate, visitStatus, diagnosis, prescription) VALUES ("
+			std::string query = "INSERT INTO visits (clientID, doctorID, visitDate, visitTime, visitStatus, diagnosis, prescription) VALUES ("
 				+ std::to_string(clientID) + ", "
 				+ std::to_string(doctorID) + ", '"
-				+ std::to_string(date.tm_year + 1900) + "-" + std::to_string(date.tm_mon + 1) + "-" + std::to_string(date.tm_mday) + "', "
-				+ std::to_string(timedate.tm_hour) + ":" + std::to_string(timedate.tm_min) + ":" + std::to_string(timedate.tm_sec) + ", "
+				+ std::to_string(visitDate.tm_year + 1900) + "-" + std::to_string(visitDate.tm_mon + 1) + "-" + std::to_string(visitDate.tm_mday) + "', "
+				+ std::to_string(visitTime.tm_hour) + ":" + std::to_string(visitTime.tm_min)  + ":" + std::to_string(visitTime.tm_sec) + "', "
 				+ (visitStatus ? "1" : "0") + ", '"
 				+ diagnosis + "', '"
 				+ prescription + "')";
@@ -1165,12 +1243,12 @@ void Visit::write_visitrow()
 	{
 		if (connect_todb())
 		{
-			std::string query = "UPDATE visit SET "
+			std::string query = "UPDATE visits SET "
 				"clientID = " + std::to_string(clientID) + ", "
 				"doctorID = " + std::to_string(doctorID) + ", "
-				"date = '" + std::to_string(date.tm_year + 1900) + "-" + std::to_string(date.tm_mon + 1) + "-" + std::to_string(date.tm_mday) + "', "
-				"datetime = '" + std::to_string(date.tm_hour) + ":" + std::to_string(date.tm_min) + ":" + std::to_string(date.tm_sec) + ", "
-				"visitStatus = " + (visitStatus ? "1" : "0") + ", "
+				"visitDate = '" + std::to_string(visitDate.tm_year + 1900) + "-" + std::to_string(visitDate.tm_mon + 1) + "-" + std::to_string(visitDate.tm_mday) + "', "
+				"visitTime = '" + std::to_string(visitTime.tm_hour) + ":" + std::to_string(visitTime.tm_min)  + ":" + std::to_string(visitDate.tm_sec)  + "', "
+				"visitStatus = " + (visitStatus ? "1" : "0") + ", '"
 				"diagnosis = '" + diagnosis + "', "
 				"prescription = '" + prescription + "' WHERE visitID = " + std::to_string(visitID);
 			execute_query(query);
@@ -1190,8 +1268,11 @@ void Visit::print_visit()
 	std::cout << "Doctor ID: " << doctorID << std::endl;
 
 	char dateStr[11]; // "YYYY-MM-DD\0"
-	std::strftime(dateStr, sizeof(dateStr), "%Y-%m-%d", &date);
+	std::strftime(dateStr, sizeof(dateStr), "%Y-%m-%d", &visitDate);
+	char timeStr[11]; // "YYYY-MM-DD\0"
+	std::strftime(timeStr, sizeof(timeStr), "%H:%M", &visitTime);
 	std::cout << "Date: " << dateStr << std::endl;
+	std::cout << "Time: " << timeStr << std::endl;
 
 	std::cout << "Visit Status: " << (visitStatus ? "Completed" : "Not Completed") << std::endl;
 	std::cout << "Diagnosis: " << diagnosis << std::endl;
@@ -1230,7 +1311,8 @@ std::vector<User> read_usertable()
 			std::string tempdate = res->getString("userBirthDate");
 			user.userBirthDate.tm_year -= 1900;
 			user.userBirthDate.tm_mon -= 1;
-			
+			user.userFamilyDoctor = res->getInt("userFamilyDoctor");
+
 			users.push_back(user);
 		}
 
@@ -1252,7 +1334,7 @@ std::vector<User> read_usertable(const std::string& Filename)
 	std::string extension = get_filetype(Filename);
 	std::vector<User> users;
 
-	if (extension == "xml") //вот тут(и в других таких ифах) стоит подобавлять тестов если extension и не json и не xml
+	if (extension == "xml") //пїЅпїЅпїЅ пїЅпїЅпїЅ(пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ) пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ extension пїЅ пїЅпїЅ json пїЅ пїЅпїЅ xml
 	{
 		pugi::xml_document doc;
 		if (!doc.load_file(Filename.c_str()))
@@ -1277,6 +1359,7 @@ std::vector<User> read_usertable(const std::string& Filename)
 			user.userBirthDate.tm_year = userNode.child("userBirthYear").text().as_int();
 			user.userBirthDate.tm_mon = userNode.child("userBirthMon").text().as_int();
 			user.userBirthDate.tm_mday = userNode.child("userBirthDay").text().as_int();
+			user.userFamilyDoctor = userNode.child("userFamilyDoctor").text().as_int();
 
 			users.push_back(user);
 		}
@@ -1310,6 +1393,7 @@ std::vector<User> read_usertable(const std::string& Filename)
 				user.userBirthDate.tm_year = userNode["userBirthYear"];
 				user.userBirthDate.tm_mon = userNode["userBirthMon"];
 				user.userBirthDate.tm_mday = userNode["userBirthDay"];
+				user.userFamilyDoctor = userNode["userFamilyDoctor"];
 
 				users.push_back(user);
 			}
@@ -1341,6 +1425,7 @@ void write_usertable(const std::vector<User>& users, const std::string& Filename
 			userNode["userBirthYear"] = user.userBirthDate.tm_year;
 			userNode["userBirthMon"] = user.userBirthDate.tm_mon;
 			userNode["userBirthDay"] = user.userBirthDate.tm_mday;// winforms date doesn't work here;
+			userNode["userFamilyDoctor"] = user.userFamilyDoctor;
 
 			jsonData.push_back(userNode);
 		}
@@ -1376,6 +1461,7 @@ void write_usertable(const std::vector<User>& users, const std::string& Filename
 			userNode.append_child("userBirthYear").text().set(user.userBirthDate.tm_year);
 			userNode.append_child("userBirthMon").text().set(user.userBirthDate.tm_mon);
 			userNode.append_child("userBirthDay").text().set(user.userBirthDate.tm_mday);
+			userNode.append_child("userFamilyDoctor").text().set(user.userFamilyDoctor);
 		}
 
 		if (doc.save_file(Filename.c_str()))
@@ -1425,8 +1511,9 @@ std::vector<Hospital> read_hospitaltable(const std::string& Filename)
 			tmp.hospitalAddress = hospitalNode.child_value("hospitalAddress");
 			tmp.hospitalName = hospitalNode.child_value("hospitalName");
 			tmp.hospitalRating = std::stoi(hospitalNode.child_value("hospitalRating"));
+			tmp.hospitalDistrict = hospitalNode.child_value("hospitalDistrict");
 
-			const char* isPrivateStr = hospitalNode.child_value("hospitalIsPrivate"); //возможно здесь что-то не так, но вроде нет
+			const char* isPrivateStr = hospitalNode.child_value("hospitalIsPrivate"); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 			tmp.hospitalIsPrivate = (std::string(isPrivateStr) == "true");
 
 			hosps.push_back(tmp);
@@ -1457,6 +1544,7 @@ std::vector<Hospital> read_hospitaltable(const std::string& Filename)
 				tmp.hospitalAddress = hospNode["hospitalAddress"];
 				tmp.hospitalName = hospNode["hospitalName"];
 				tmp.hospitalRating = hospNode["hospitalRating"];
+				tmp.hospitalDistrict = hospNode["hospitalDistrict"];
 
 				hosps.push_back(tmp);
 			}
@@ -1494,7 +1582,7 @@ std::vector<Hospital> read_hospitaltable()
 			tmp.hospitalAddress = res->getString("hospitalAddress");
 			tmp.hospitalName = res->getString("hospitalName");
 			tmp.hospitalRating = res->getInt("hospitalRating");
-			tmp.hospitalRegion = res->getString("hospitalRegion");
+			tmp.hospitalDistrict = res->getString("hospitalDistrict");
 
 			hosps.push_back(tmp);
 		}
@@ -1526,6 +1614,7 @@ void write_hospitaltable(const std::vector<Hospital>& hospitals, const std::stri
 			hospNode["hospitalAddress"] = hospital.hospitalAddress;
 			hospNode["hospitalName"] = hospital.hospitalName;
 			hospNode["hospitalRating"] = hospital.hospitalRating;
+			hospNode["hospitalDistrict"] = hospital.hospitalDistrict;
 
 			jsonData.push_back(hospNode);
 		}
@@ -1556,6 +1645,7 @@ void write_hospitaltable(const std::vector<Hospital>& hospitals, const std::stri
 			hospNode.append_child("hospitalAddress").text().set(hospital.hospitalAddress.c_str());
 			hospNode.append_child("hospitalName").text().set(hospital.hospitalName.c_str());
 			hospNode.append_child("hospitalRating").text().set(hospital.hospitalRating);
+			hospNode.append_child("hospitalDistrict").text().set(hospital.hospitalDistrict.c_str());
 		}
 
 		if (doc.save_file(Filename.c_str()))
@@ -1703,7 +1793,7 @@ std::vector<Doctor> read_doctortable()
 			tmp.docSpeciality = res->getString("docSpeciality");
 			tmp.docWorkingDays = tmp.get_workingdays(tmp.docID);
 			tmp.docWorkPlace = res->getInt("docWorkPlace");
-			//парсинг даты
+			//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 			std::string employmentDateStr = res->getString("docEmploymentDate");
 			if (sscanf_s(employmentDateStr.c_str(), "%d-%d-%d", &tmp.docEmploymentDate.tm_year, &tmp.docEmploymentDate.tm_mon, &tmp.docEmploymentDate.tm_mday) == 3)
 			{
@@ -1859,13 +1949,11 @@ std::vector<Visit> read_visittable(const std::string& Filename)
 			tmp.visitStatus = visitNode.attribute("visitStatus").as_bool();
 			tmp.diagnosis = visitNode.child_value("diagnosis");
 			tmp.prescription = visitNode.child_value("prescription");
-
-			// будь проклят ctime, я наверное часа 3 думал как считывать даты
-			std::string dateStr = visitNode.child_value("date");
-			if (sscanf_s(dateStr.c_str(), "%d-%d-%d", &tmp.date.tm_year, &tmp.date.tm_mon, &tmp.date.tm_mday) == 3)
-			{
-				//tmp.date.tm_mon -= 1;
-			}
+			tmp.visitDate.tm_year = visitNode.child("visitDateYear").text().as_int();
+			tmp.visitDate.tm_mon = visitNode.child("visitDateYear").text().as_int();
+			tmp.visitDate.tm_mday = visitNode.child("visitDateYear").text().as_int();
+			tmp.visitTime.tm_hour = visitNode.child("visitHour").text().as_int();
+			tmp.visitTime.tm_min = visitNode.child("visitMinute").text().as_int();
 
 			visits.push_back(tmp);
 		}
@@ -1900,11 +1988,11 @@ std::vector<Visit> read_visittable()
 				tmp.clientID = res->getInt("userID");
 				tmp.doctorID = res->getInt("doctorID");
 
-				if (sscanf_s(res->getString("visitDate").c_str(), "%d-%d-%d", &tmp.date.tm_year, &tmp.date.tm_mon, &tmp.date.tm_mday) == 3) {
+				if (sscanf_s(res->getString("visitDate").c_str(), "%d-%d-%d", &tmp.visitDate.tm_year, &tmp.visitDate.tm_mon, &tmp.visitDate.tm_mday) == 3) {
 					//tmp.date.tm_mon -= 1;
 				}
 				std::string time = res->getString("visitTime");
-				sscanf_s(time.c_str(), "%d:%d:%d", &tmp.timedate.tm_hour, &tmp.timedate.tm_min, &tmp.timedate.tm_sec);
+				if (sscanf_s(time.c_str(), "%d:%d", &tmp.visitTime.tm_hour, &tmp.visitTime.tm_min) == 3) {}
 				tmp.visitStatus = res->getBoolean("visitStatus");
 				tmp.diagnosis = res->getString("diagnosis");
 				tmp.prescription = res->getString("prescription");
@@ -1934,9 +2022,11 @@ void write_visittable(const std::vector<Visit>& visits, const std::string& Filen
 			visitNode["visitID"] = visit.visitID;
 			visitNode["clientID"] = visit.clientID;
 			visitNode["doctorID"] = visit.doctorID;
-			visitNode["DateYear"] = visit.date.tm_year;
-			visitNode["DateMon"] = visit.date.tm_mon;
-			visitNode["DateDay"] = visit.date.tm_mday;
+			visitNode["visitDateYear"] = visit.visitDate.tm_year;
+			visitNode["visitDateMon"] = visit.visitDate.tm_mon;
+			visitNode["visitDateDay"] = visit.visitDate.tm_mday;
+			visitNode["visitHour"] = visit.visitTime.tm_hour;
+			visitNode["visitMinute"] = visit.visitTime.tm_min;
 			visitNode["Diagnosis"] = visit.diagnosis;
 			visitNode["Prescription"] = visit.prescription;
 			visitNode["Status"] = visit.visitStatus;
@@ -1968,9 +2058,11 @@ void write_visittable(const std::vector<Visit>& visits, const std::string& Filen
 			visitNode.append_attribute("visitID") = visit.visitID;
 			visitNode.append_child("clientID").text().set(visit.clientID);
 			visitNode.append_child("doctorID").text().set(visit.doctorID);
-			visitNode.append_child("DateYear").text().set(visit.date.tm_year);
-			visitNode.append_child("DateMon").text().set(visit.date.tm_mon);
-			visitNode.append_child("DateDay").text().set(visit.date.tm_mday);
+			visitNode.append_child("visitDateYear").text().set(visit.visitDate.tm_year);
+			visitNode.append_child("visitDateMon").text().set(visit.visitDate.tm_mon);
+			visitNode.append_child("visitDateDay").text().set(visit.visitDate.tm_mday);
+			visitNode.append_child("visitHour").text().set(visit.visitTime.tm_hour);
+			visitNode.append_child("visitMinute").text().set(visit.visitTime.tm_min);
 			visitNode.append_child("diagnosis").text().set(visit.diagnosis.c_str());
 			visitNode.append_child("prescription").text().set(visit.prescription.c_str());
 		}

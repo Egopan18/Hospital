@@ -63,12 +63,12 @@ namespace mainProject {
 					{
 						char dateStr[11]; // ƒл€ хранени€ строки даты
 						std::sprintf(dateStr, "%04d-%02d-%02d",
-							visit.date.tm_year,
-							visit.date.tm_mon,
-							visit.date.tm_mday);
+							visit.visitDate.tm_year,
+							visit.visitDate.tm_mon,
+							visit.visitDate.tm_mday);
 							
 						char visitTimeStr[9]; // ƒл€ хранени€ строки времени
-						std::sprintf(visitTimeStr, "%02d:%02d:%02d", visit.timedate.tm_hour, visit.timedate.tm_min, visit.timedate.tm_sec);
+						std::sprintf(visitTimeStr, "%02d:%02d:%02d", visit.visitTime.tm_hour, visit.visitTime.tm_min, visit.visitTime.tm_sec);
 						std::string dateTime = std::string(dateStr) + " " + std::string(visitTimeStr);
 
 						doctorVisits.push_back(dateTime);
@@ -182,7 +182,7 @@ namespace mainProject {
 			{
 				Hospital hospital = hospitals[i];
 				// ѕровер€ем, соответствует ли больница выбранным регионам и специализаци€м
-				bool regionSelected = selectedRegions->Count > 0 ? IsHospitalSelected(hospital.hospitalRegion) : true;
+				bool regionSelected = selectedRegions->Count > 0 ? IsHospitalSelected(hospital.hospitalDistrict) : true;
 				// ≈сли специальность выбрана, провер€ем наличие специалистов в больнице
 				bool specSelected = selectedSpec->Count > 0 ? HospitalHasRequiredSpecialties(hospital, doctors) : true;
 				bool typeSelected = selectedHospitalTypes->Count > 0 ? selectedHospitalTypes->Contains(hospital.hospitalIsPrivate) : true;
