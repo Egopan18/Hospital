@@ -1,9 +1,1 @@
-﻿  Algorithms.cpp
-  Classes.cpp
-  Data.cpp
-  Exceptions.cpp
-  MyForm.cpp
-  .NETFramework,Version=v4.7.2.AssemblyAttributes.cpp
-  Generating Code...
-  Algorithms.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
-  mainProject.vcxproj -> D:\курсовий\Hospital\mainProject\x64\Release\mainProject.exe
+﻿  mainProject.vcxproj -> C:\Users\lika9\Downloads\Hospital\mainProject\x64\Release\mainProject.exe
