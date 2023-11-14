@@ -319,10 +319,10 @@ namespace mainProject {
 #pragma endregion
 
 	private: System::Void BSign_Click(System::Object^ sender, System::EventArgs^ e) {
-		User obj;
-		Hash pass;
+		User obj; // Створюємо об'єкт класу User для збереження даних користувача.
+		Hash pass; // Створюємо об'єкт класу Hash для обробки пароля.
+		std::vector<User> users;
 
-		//Конвертація
 		System::String^ TbUser = TbName->Text;
 		System::String^ TbSurname = TbSurn->Text;
 		System::String^ TbPat = TbPatr->Text;
@@ -330,32 +330,43 @@ namespace mainProject {
 		System::DateTime^ TbBirthday = dateBith->Value;
 		System::String^ TbPassword = mTbPassw->Text;
 
-		std::string Name = ParseToString(TbUser);
-		std::string Surname = ParseToString(TbSurname);
-		std::string MiddleName = ParseToString(TbPat);
-		std::string Telephone = ParseToString(TbTelephone);
-		std::tm Birthday = ParseToTm(TbBirthday);
-		std::string Password = ParseToString(TbPassword);
-		//Конвертація
+	
 
-		//ЗАПИC
+		std::string Name = ParseToStringorSTDSTRING(TbUser);
+		std::string Surname = ParseToStringorSTDSTRING(TbSurname);
+		std::string MiddleName = ParseToStringorSTDSTRING(TbPat);
+		std::string Telephone = ParseToStringorSTDSTRING(TbTelephone);
+		std::tm Birthday = ParseToTm(TbBirthday);
+		std::string Password = ParseToStringorSTDSTRING(TbPassword);
+
+		std::string phone = Telephone;
+		
+
+		if (phone == "Invalid Number")
+		{
+			// Виводимо сповіщення користувачу у випадку невірного формату номера телефону.
+			MessageBox::Show("Неправильний формат телефонного номера. Будь ласка, введіть правильний номер.", "Помилка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+
+		// Заповнюємо об'єкт користувача даними та обчислюємо вік.
+
 		obj.userName = Name;
 		obj.userSurname = Surname;
 		obj.userMiddleName = MiddleName;
+		Telephone = standardizePhoneNumberUA(Telephone); // Стандартизуємо формат номеру телефону
 		obj.userPhone = Telephone;
 		obj.userBirthDate = Birthday;
-		obj.userPassword = pass.getHash(Password, 6);
-		obj.userAge = AgeCalculator(obj, Birthday);
-		obj.write_userrow();
-		//ЗАПИС
-		System::String^ Pass = ParseToNETstring(Password);
-		// Створюємо новий екземпляр форми LogForm
-		LogForm^ logForm = gcnew LogForm(obj, Pass);
+		obj.userPassword = pass.getHash(Password, 6); // Обчислюємо хеш пароля.
+		obj.userAge = AgeCalculator(obj, Birthday); // Обчислюємо вік користувача.
 
-		// Ховаємо поточну форму
+		obj.write_userrow(); // Записуємо дані користувача.
+
+		System::String^ Pass = ParseToStringorSTDSTRING(Password);
+		LogForm^ logForm = gcnew LogForm(obj, Pass, phone);
+
 		this->Hide();
 
-		// Показуємо нову форму StartForm
 		logForm->Show();
 	}
 

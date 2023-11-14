@@ -2,13 +2,17 @@
 #include "Data.h"
 //Функція для розрахунку віку
 int AgeCalculator(User& obj, tm Date);
-//ПарсингObejct^ в рядок
-std::string ParseToString(System::Object^ data);
-//Парсинг DateTime^ в tm
+//Парсинг
+std::string ParseToStringorSTDSTRING(System::Object^ data);
 std::tm ParseToTm(System::DateTime^ data);
-//Парсинг NET в string
-System::String^ ParseToNETstring(std::string data);
+System::String^ ParseToStringorSTDSTRING(std::string data);
+//Парсинг Tm в DateTime
 System::DateTime^ ConvertToDateTime(std::tm dateInfo);
+System::DateTime ConvertTmToDateTime(std::tm tmStruct);
+//Сортування за рейтингом
+void SortHospitalsByRating(std::vector<Hospital>& hospitals, array<System::String^>^ dataList);
+//Стандартизація номера
+std::string standardizePhoneNumberUA(const std::string& rawNumber);
 //Хеш
 class Hash
 {

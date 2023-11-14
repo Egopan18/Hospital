@@ -4,7 +4,6 @@
 
 #include "Include.h"
 
-
 #include <jdbc/mysql_driver.h>
 #include <jdbc/cppconn/driver.h>
 
@@ -66,7 +65,6 @@ public:
 	int hospitalRating;
 	std::string hospitalDistrict;
 
-
 	Hospital();
 
 	//��. ������ ������ User ����� ������ ���������� �������
@@ -99,7 +97,7 @@ public:
 	int docExpirienceYears;
 	int docRating;
 	int docMaxDayClients;
-	tm docWorkingHoursStart = {};
+	tm docWorkingHoursStart;
 	tm docWorkingHoursEnd = {};
 	std::string docReviews; //�������� ��� ������ ���� �� ������ � ���-�� ������, �� � ��;
 	int docWorkPlace; //��������� - ���� ��������

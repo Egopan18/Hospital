@@ -112,7 +112,6 @@ void User::write_userrow()
 		prep_stmt->setDateTime(7, dateStr);
 		prep_stmt->setInt(8, userFamilyDoctor);
 
-
 		prep_stmt->execute();
 
 		delete prep_stmt;
@@ -909,7 +908,6 @@ void Doctor::write_doctorrow(const std::string& Filename)
 			docNode.append_child("docWorkingHoursEndHour").text().set(this->docWorkingHoursEnd.tm_hour);
 			docNode.append_child("docWorkingHoursEndMin").text().set(this->docWorkingHoursEnd.tm_min);
 			//TODO writing contracts
-
 		}
 
 		if (doc.save_file(Filename.c_str()))
@@ -1218,46 +1216,50 @@ void Visit::write_visitrow(const std::string& Filename)
 
 void Visit::write_visitrow()
 {
-	if (visitID == 0)
+	if (!connect_todb())
 	{
-		if (connect_todb())
-		{
-			std::string query = "INSERT INTO visits (clientID, doctorID, visitDate, visitTime, visitStatus, diagnosis, prescription) VALUES ("
-				+ std::to_string(clientID) + ", "
-				+ std::to_string(doctorID) + ", '"
-				+ std::to_string(visitDate.tm_year + 1900) + "-" + std::to_string(visitDate.tm_mon + 1) + "-" + std::to_string(visitDate.tm_mday) + "', "
-				+ std::to_string(visitTime.tm_hour) + ":" + std::to_string(visitTime.tm_min)  + ":" + std::to_string(visitTime.tm_sec) + "', "
-				+ (visitStatus ? "1" : "0") + ", '"
-				+ diagnosis + "', '"
-				+ prescription + "')";
-
-			execute_query(query);
-			close_connection();
-		}
-		else
-		{
-			std::cerr << "Failed to connect to the database." << std::endl;
-		}
+		std::cerr << "Failed to connect to the database." << std::endl;
+		return;
 	}
-	else
+
+	try
 	{
-		if (connect_todb())
+		sql::PreparedStatement* prep_stmt;
+
+		if (visitID == 0)
 		{
-			std::string query = "UPDATE visits SET "
-				"clientID = " + std::to_string(clientID) + ", "
-				"doctorID = " + std::to_string(doctorID) + ", "
-				"visitDate = '" + std::to_string(visitDate.tm_year + 1900) + "-" + std::to_string(visitDate.tm_mon + 1) + "-" + std::to_string(visitDate.tm_mday) + "', "
-				"visitTime = '" + std::to_string(visitTime.tm_hour) + ":" + std::to_string(visitTime.tm_min)  + ":" + std::to_string(visitDate.tm_sec)  + "', "
-				"visitStatus = " + (visitStatus ? "1" : "0") + ", '"
-				"diagnosis = '" + diagnosis + "', "
-				"prescription = '" + prescription + "' WHERE visitID = " + std::to_string(visitID);
-			execute_query(query);
-			close_connection();
+			prep_stmt = con->prepareStatement("INSERT INTO visits (userID, doctorID, visitDate, visitTime, visitStatus, diagnosis, prescription) VALUES (?, ?, ?, ?, ?, ?, ?)");
 		}
 		else
 		{
-			std::cerr << "Failed to connect to the database." << std::endl;
+			prep_stmt = con->prepareStatement("UPDATE visits SET userID=?, doctorID=?, visitDate=?, visitTime=?, visitStatus=?, diagnosis=?, prescription=? WHERE visitID = ?");
+			prep_stmt->setInt(8, visitID);
 		}
+
+		prep_stmt->setInt(1, this->clientID);
+		prep_stmt->setInt(2, this->doctorID);
+
+		char dateStr[11]; // "YYYY-MM-DD\0"
+		std::strftime(dateStr, 11, "%Y-%m-%d", &this->visitDate);
+		prep_stmt->setString(3, dateStr);
+
+		char timeStr[9]; //"HH:MM:SS\0"
+		std::strftime(timeStr, 9, "%H:%M:%S", &this->visitTime);
+		prep_stmt->setString(4, timeStr);
+
+		prep_stmt->setBoolean(5, this->visitStatus);
+		prep_stmt->setString(6, this->diagnosis);
+		prep_stmt->setString(7, this->prescription);
+
+		prep_stmt->execute();
+
+		delete prep_stmt;
+
+		close_connection();
+	}
+	catch (sql::SQLException& e)
+	{
+		std::cerr << "Error writing hospital data: " << e.what() << std::endl;
 	}
 }
 
@@ -1807,9 +1809,9 @@ std::vector<Doctor> read_doctortable()
 			tmp.docReviews = res->getString("docReviews");
 
 			std::string workstart = res->getString("docWorkingHoursStart");
-			sscanf_s(workstart.c_str(), "%d-%d", &tmp.docWorkingHoursStart.tm_hour, &tmp.docWorkingHoursStart.tm_min);
+			sscanf_s(workstart.c_str(), "%d:%d", &tmp.docWorkingHoursStart.tm_hour, &tmp.docWorkingHoursStart.tm_min);
 			std::string workend = res->getString("docWorkingHoursEnd");
-			sscanf_s(workend.c_str(), "%d-%d", &tmp.docWorkingHoursEnd.tm_hour, &tmp.docWorkingHoursEnd.tm_min);
+			sscanf_s(workend.c_str(), "%d:%d", &tmp.docWorkingHoursEnd.tm_hour, &tmp.docWorkingHoursEnd.tm_min);
 
 			doctors.push_back(tmp);
 		}

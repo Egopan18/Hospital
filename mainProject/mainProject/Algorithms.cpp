@@ -11,13 +11,12 @@ int AgeCalculator(User& obj, tm Date)
 	return age;
 }
 //Парсинг
-std::string ParseToString(System::Object^ data)
+std::string ParseToStringorSTDSTRING(System::Object^ data)
 {
 	if (System::String^ str = dynamic_cast<System::String^>(data))
 	{
 		return msclr::interop::marshal_as<std::string>(data->ToString());
 	}
-	
 }
 std::tm ParseToTm(System::DateTime^ data)
 {
@@ -25,24 +24,32 @@ std::tm ParseToTm(System::DateTime^ data)
 	Date.tm_year = data->Year - 1900;
 	Date.tm_mon = data->Month - 1;
 	Date.tm_mday = data->Day;
-
+	Date.tm_hour = data->Hour;
+	Date.tm_min = data->Minute;
+	Date.tm_sec = data->Second;
 	return Date;
 }
-System::String^ ParseToNETstring(std::string data)
+System::String^ ParseToStringorSTDSTRING(std::string data)
 {
 	System::String^ parse_data = msclr::interop::marshal_as<System::String^>(data);
 	return parse_data;
-
 }
+//Конвертація (рік, місяць, день)
 System::DateTime^ ConvertToDateTime(std::tm dateInfo)
 {
-	// Calculate the year, month, and day based on tm structure
-	int year = dateInfo.tm_year + 1900;   // tm_year is years since 1900
-	int month = dateInfo.tm_mon + 1;       // tm_mon is 0-based month
+	int year = dateInfo.tm_year + 1900;
+	int month = dateInfo.tm_mon + 1;
 	int day = dateInfo.tm_mday;
 
-	// Create a System::DateTime object
 	return gcnew System::DateTime(year, month, day);
+}
+System::DateTime ConvertTmToDateTime(std::tm tmStruct)
+{
+	int year = tmStruct.tm_year;  // tm_year is years since 1900
+	int month = tmStruct.tm_mon;     // tm_mon is 0-based (0 = January)
+	int day = tmStruct.tm_mday;
+
+	return System::DateTime(year, month, day);
 }
 //Функції хешування паролю
 int Hash::receivingCodes(int x)
@@ -132,4 +139,56 @@ std::string Hash::getHash(std::string userpass, int lengthHash)
 	hash += receivingCodes(maxLengthstr);
 
 	return hash;
+}
+//Сортування за рейтингом
+void SortHospitalsByRating(std::vector<Hospital>& hospitals, array<System::String^>^ dataList)
+{
+	int n = hospitals.size();
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = 0; j < n - i - 1; j++) {
+			if (hospitals[j].hospitalRating < hospitals[j + 1].hospitalRating) {
+				// Обмен значений больниц
+				std::swap(hospitals[j], hospitals[j + 1]);
+
+				// Обмен значений в dataList
+				System::String^ temp = dataList[j];
+				dataList[j] = dataList[j + 1];
+				dataList[j + 1] = temp;
+			}
+		}
+	}
+}
+//Стандартизація номера
+std::string standardizePhoneNumberUA(const std::string& rawNumber) {
+	std::string cleanNumber;
+
+	// Видалення непотрібних символів
+	for (char c : rawNumber)
+	{
+		if (isdigit(c)) {
+			cleanNumber += c;
+		}
+	}
+
+	// Додавання коду країни, якщо потрібно
+	if (cleanNumber.length() == 10 && cleanNumber[0] == '0')
+	{
+		cleanNumber = "380" + cleanNumber.substr(1);
+	}
+	else if (cleanNumber.length() == 12 && cleanNumber.rfind("380", 0) != 0)
+	{
+		// Можливо, неправильний формат
+		return "Invalid Number";
+	}
+
+	// Перевірка довжини номера
+	if (cleanNumber.length() != 12)
+	{
+		return "Invalid Number";
+	}
+
+	// Форматування номера
+	std::string formattedNumber = "+" + cleanNumber.substr(0, 3) + " " + cleanNumber.substr(3, 2) + " " + cleanNumber.substr(5, 3) + " " + cleanNumber.substr(8, 2) + " " + cleanNumber.substr(10);
+
+	return formattedNumber;
 }

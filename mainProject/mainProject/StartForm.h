@@ -16,7 +16,7 @@ namespace mainProject {
 	/// <summary>
 	/// Summary for StartForm
 	/// </summary>
-	/// 	
+	///
 
 	public ref class StartForm : public System::Windows::Forms::Form
 	{
@@ -253,18 +253,27 @@ namespace mainProject {
 	private:
 		//Вхід
 		System::Void Blog_Click(System::Object^ sender, System::EventArgs^ e) {
-			//Записуємо дані із б\д в вектор.
+			//Використовуємо для хешування
 			Hash obj;
-			int i = 3;
 			std::vector<User> UsVec1 = read_usertable();
-			std::vector<User> UsDate;
+			//Змінна для передачі в інші форми
+			std::string phone;
+			//То шо написав зараз
 			System::String^ NowNumber = TbTel->Text;
 			System::String^ NowPassword = mTbPassw->Text;
-			std::string Phone_Number = ParseToString(NowNumber);
-			std::string Password = ParseToString(NowPassword);
+			//Стадартизуємо
+			std::string Phone_Number = ParseToStringorSTDSTRING(NowNumber);
+			Phone_Number = standardizePhoneNumberUA(Phone_Number);
+			if (Phone_Number == "Invalid Number")
+			{
+				MessageBox::Show("Неправильний формат номера. Введіть правильний номер.", "Помилка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			std::string Password = ParseToStringorSTDSTRING(NowPassword);
 			//Перевірочні змінні
 			bool phoneNumberExists = false;
 			bool passwordExists = false;
+			//Хеш
 			std::string hashPassword;
 			hashPassword = obj.getHash(Password, 6);
 			//Якщо користувач нічого не ввів
@@ -275,62 +284,67 @@ namespace mainProject {
 			//	return;
 			//}
 			//Записуємо номера
+
+			bool isPasswordMatching = false;
+
 			for (const User& user : UsVec1)
 			{
-				//Перевіряємо
-				if (Phone_Number == user.userPhone)
+				// Перевіряємо, чи співпадає номер телефону
+				if (Phone_Number == standardizePhoneNumberUA(user.userPhone))
 				{
 					phoneNumberExists = true;
-					int userId = user.userID;
-					break;
-				}
-			}
-			//Записуємо паролі
-			for (const User& user : UsVec1)
-			{
-				if (hashPassword == user.userPassword)
-				{
-					passwordExists = true;
-					break;
-				}
-			}
-			//Якщо користувач є в базі
-			if (phoneNumberExists && passwordExists)
-			{
-				User user1;
-				System::String^ Pass = ParseToNETstring(Password);
-				for (const User& user : UsVec1)
-				{
-					if (Phone_Number == user.userPhone && hashPassword == user.userPassword)
+
+					// Якщо номер телефону співпадає, перевіряємо пароль
+					if (hashPassword == user.userPassword)
 					{
-						user1 = user;
-						break;
+						isPasswordMatching = true;
+						int userId = user.userID;
 					}
+
+					// Потрібно вийти з циклу після знаходження співпадаючого номера телефону
+					break;
 				}
-				// Створюємо новий екземпляр форми LogForm
-				LogForm^ logForm = gcnew LogForm(user1, Pass);
-
-				// Ховаємо поточну форму
-				this->Hide();
-
-				// Показуємо нову форму LogForm
-				logForm->Show();
 			}
-			//Якщо немає в базі
+			// Якщо користувач є в базі даних
+			if (phoneNumberExists)
+			{
+				if (isPasswordMatching)
+				{
+					User user1;
+					System::String^ Pass = ParseToStringorSTDSTRING(Password);
+					for (const User& user : UsVec1)
+					{
+						if (Phone_Number == user.userPhone && hashPassword == user.userPassword)
+						{
+							user1 = user;
+
+							phone = user.userPhone;
+							break;
+						}
+					}
+					LogForm^ logForm = gcnew LogForm(user1, Pass, phone);
+
+					this->Hide();
+
+					logForm->Show();
+				}
+				else
+				{
+					Console::WriteLine("Неправильний пароль");
+					// Номер телефону існує, але пароль не співпадає
+				}
+			}
+			// Якщо користувача немає в базі
 			else
 			{
-				//Треба зробити викид якогось повідомлення.
-				Console::WriteLine("PhoneNumber false");
+				Console::WriteLine("Користувача не знайдено");
 			}
 		}
 	private: System::Void BSign_Click(System::Object^ sender, System::EventArgs^ e) {
-		// Створюємо новий екземпляр форми SignForm
 		SignForm^ signForm = gcnew SignForm();
 
-		// Ховаємо поточну форму
 		this->Hide();
 
-		// Показуємо нову форму LogForm
 		signForm->Show();
 	}
 
@@ -344,10 +358,8 @@ namespace mainProject {
 	}
 
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		// Створюємо новий екземпляр форми SignForm
 		AboutAppForm^ aboutForm = gcnew AboutAppForm();;
 
-		// Показуємо нову форму LogForm
 		aboutForm->Show();
 	}
 

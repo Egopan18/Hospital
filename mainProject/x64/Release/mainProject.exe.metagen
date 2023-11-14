@@ -23,11 +23,12 @@ Class mainProject.AboutAppForm: AutoLayout, AnsiClass, Class, Public, BeforeFiel
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class mainProject.NewRecordForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
-    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.Windows.Forms.ComboBox): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Fields:
     System.Collections.Generic.List`1[System.String] selectedRegions : Public
     System.Collections.Generic.List`1[System.String] selectedSpec : Public
     System.Collections.Generic.List`1[System.Boolean] selectedHospitalTypes : Public
+    System.Windows.Forms.ComboBox comboBoxReference : Public
   Methods:
     cLbDoc_ItemCheck(Object, ItemCheckEventArgs): PrivateScope, Public, HideBySig
     UpdateSelectedRegions(Object, ItemCheckEventArgs): PrivateScope, Public, HideBySig
@@ -40,7 +41,7 @@ Class mainProject.NewRecordForm: AutoLayout, AnsiClass, Class, Public, BeforeFie
     HospitalHasRequiredSpecialties(Hospital* IsImplicitlyDereferenced, vector<Doctor\,std::allocator<Doctor> >* IsImplicitlyDereferenced): PrivateScope, Public, HideBySig
 Class mainProject.LogForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
-    Void .ctor(User*, System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(User*, System.String, std.basic_string<char\,std::char_traits<char>\,std::allocator<char> >*): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Fields:
     System.String pass : Public
 Class mainProject.SignForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit

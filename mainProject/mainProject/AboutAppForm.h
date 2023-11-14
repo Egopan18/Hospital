@@ -1,7 +1,6 @@
 #pragma once
 
 namespace mainProject {
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -38,8 +37,6 @@ namespace mainProject {
 	protected: System::Windows::Forms::Button^ button1;
 	protected: System::Windows::Forms::Label^ linfo;
 
-
-
 	protected:
 
 	protected:
@@ -64,9 +61,9 @@ namespace mainProject {
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->linfo = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
-			// 
+			//
 			// rTbAbout
-			// 
+			//
 			this->rTbAbout->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->rTbAbout->ForeColor = System::Drawing::SystemColors::WindowText;
@@ -76,9 +73,9 @@ namespace mainProject {
 			this->rTbAbout->TabIndex = 0;
 			this->rTbAbout->Text = resources->GetString(L"rTbAbout.Text");
 			this->rTbAbout->TextChanged += gcnew System::EventHandler(this, &AboutAppForm::rTbAbout_TextChanged);
-			// 
+			//
 			// button1
-			// 
+			//
 			this->button1->BackColor = System::Drawing::Color::OrangeRed;
 			this->button1->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->button1->Location = System::Drawing::Point(301, 601);
@@ -88,9 +85,9 @@ namespace mainProject {
 			this->button1->Text = L"OK";
 			this->button1->UseVisualStyleBackColor = false;
 			this->button1->Click += gcnew System::EventHandler(this, &AboutAppForm::button1_Click);
-			// 
+			//
 			// linfo
-			// 
+			//
 			this->linfo->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->linfo->AutoSize = true;
 			this->linfo->Location = System::Drawing::Point(12, 639);
@@ -99,9 +96,9 @@ namespace mainProject {
 			this->linfo->TabIndex = 31;
 			this->linfo->Text = L"Для отриманя інформації по формі - натисніть F1";
 			this->linfo->Click += gcnew System::EventHandler(this, &AboutAppForm::linfo_Click);
-			// 
+			//
 			// AboutAppForm
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(684, 661);
@@ -116,7 +113,6 @@ namespace mainProject {
 			this->HelpRequested += gcnew System::Windows::Forms::HelpEventHandler(this, &AboutAppForm::AboutAppForm_HelpRequested);
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
 		}
 #pragma endregion
 
@@ -124,14 +120,12 @@ namespace mainProject {
 		this->Hide();
 	}
 	private: System::Void AboutAppForm_HelpRequested(System::Object^ sender, System::Windows::Forms::HelpEventArgs^ hlpevent) {
-
 		// Текст допомоги або пояснення для форми AboutAppForm
 		String^ helpText = "Ця форма містить інформацію про додаток. Ви можете дізнатися більше про функціональність та мету цього додатку тут.\n";
 		helpText += "Для закриття цього вікна, натисніть кнопку 'OK' у нижній частині форми.";
 
 		// Показати MessageBox із текстом допомоги
 		MessageBox::Show(helpText, "Довідка", MessageBoxButtons::OK, MessageBoxIcon::Information);
-
 	}
 	private: System::Void rTbAbout_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
