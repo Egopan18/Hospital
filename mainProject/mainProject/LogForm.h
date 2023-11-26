@@ -575,16 +575,17 @@ namespace mainProject {
 		mTbPassw->Text = pass;
 
 		System::Collections::Generic::List<System::String^>^ visitList = gcnew System::Collections::Generic::List<System::String^>();
+		System::Collections::Generic::List<System::String^>^ visitListM = gcnew System::Collections::Generic::List<System::String^>();
 		//Ініціалізація ComboBox майбутні записи
 		for (Visit& Visit : visits)
 		{
 			System::DateTime visitDateTime = ConvertTmToDateTime(Visit.visitDate);
-
-			/*	if (visitDateTime < currentDate)
+				//Якщо теперішній час більше ніж коли ми записувалия, то ми опоздали.
+				if (visitDateTime < currentDate)
 				{
-					Visit.visitStatus = 2;
-					Visit.write_visitrow();
-				}*/
+					Visit.visitStatus = false;
+					Visit.update_visitStatus();
+				}
 				//Якщо 1 то це майбутній запис, + перевірка айді користувача
 			if (Visit.visitStatus == 1 && Visit.clientID == UserID)
 			{
@@ -603,6 +604,28 @@ namespace mainProject {
 				//Сортируємо
 				sortVisits(visitList);
 			}
+			//Минулі завантаження в комбо бокс
+			if (Visit.visitStatus == 0 && Visit.clientID == UserID)
+			{
+				System::DateTime visitTime(Visit.visitDate.tm_year, Visit.visitDate.tm_mon, Visit.visitDate.tm_mday, Visit.visitTime.tm_hour, Visit.visitTime.tm_min, Visit.visitTime.tm_sec);
+				System::String^ dateTimeString = visitTime.ToString("yyyy-MM-dd HH:mm:ss");
+				std::string spec;
+				for (Doctor& Doctor : doctors)
+				{
+					if (Doctor.docID == Visit.doctorID)
+					{
+						spec = Doctor.docSpeciality;
+					}
+				}
+				System::String^ fullInfoString = gcnew System::String(dateTimeString + " - " + ParseToStringorSTDSTRING(spec));
+				visitListM->Add(fullInfoString);
+				//Сортируємо
+				sortVisits(visitListM);
+			}
+		}
+		for each (System::String ^ visitString in visitListM)
+		{
+			CbLast->Items->Add(visitString);
 		}
 		//Додаємо на комбо бокс візити
 		for each (System::String ^ visitString in visitList)
@@ -621,7 +644,97 @@ namespace mainProject {
 	private: System::Void dateBith_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
 	private: System::Void bCancle_Click(System::Object^ sender, System::EventArgs^ e) {
+		Visit obj;
+		std::vector<Visit> visits = read_visittable();
+		std::vector<User> users = read_usertable();
+		std::vector<Doctor> doctors = read_doctortable();
+
 		System::Object^ selectedItem = CbFuture->SelectedItem;
+
+		System::String^ selectedItemString = dynamic_cast<System::String^>(selectedItem);
+		if (selectedItemString != nullptr)
+		{
+			int year, month, day, hour, minute, second;
+			if (sscanf_s(msclr::interop::marshal_as<std::string>(selectedItemString).c_str(),
+				"%d-%d-%d %d:%d:%d",
+				//Ріжимо дату
+				&year, &month, &day, &hour, &minute, &second) == 6)
+			{
+
+				for (Visit& visit : visits) 
+				{
+					if (visit.clientID == UserID&&
+						visit.visitDate.tm_year == year&&
+						visit.visitDate.tm_mon == month&&
+						visit.visitDate.tm_mday == day &&
+						visit.visitTime.tm_hour == hour &&
+						visit.visitTime.tm_min == minute)
+					{
+						//Отмєна
+						visit.visitStatus = false;
+						visit.update_visitStatus();
+						break; 
+					}
+				}
+			}
+		}
+		CbFuture->Items->Clear();
+		CbLast->Items->Clear();
+		visits = read_visittable();
+		System::Collections::Generic::List<System::String^>^ visitList = gcnew System::Collections::Generic::List<System::String^>();
+		System::Collections::Generic::List<System::String^>^ visitListM = gcnew System::Collections::Generic::List<System::String^>();
+
+		for (Visit& Visit : visits)
+		{
+			System::DateTime visitDateTime = ConvertTmToDateTime(Visit.visitDate);
+
+			//Якщо 1 то це майбутній запис, + перевірка айді користувача
+			if (Visit.visitStatus == 1 && Visit.clientID == UserID)
+			{
+				System::DateTime visitTime(Visit.visitDate.tm_year, Visit.visitDate.tm_mon, Visit.visitDate.tm_mday, Visit.visitTime.tm_hour, Visit.visitTime.tm_min, Visit.visitTime.tm_sec);
+				System::String^ dateTimeString = visitTime.ToString("yyyy-MM-dd HH:mm:ss");
+				std::string spec;
+				for (Doctor& Doctor : doctors)
+				{
+					if (Doctor.docID == Visit.doctorID)
+					{
+						spec = Doctor.docSpeciality;
+					}
+				}
+				System::String^ fullInfoString = gcnew System::String(dateTimeString + " - " + ParseToStringorSTDSTRING(spec));
+				visitList->Add(fullInfoString);
+				//Сортируємо
+				sortVisits(visitList);
+			}
+			//Минулі завантаження в комбо бокс
+			if (Visit.visitStatus == 0 && Visit.clientID == UserID)
+			{
+				System::DateTime visitTime(Visit.visitDate.tm_year, Visit.visitDate.tm_mon, Visit.visitDate.tm_mday, Visit.visitTime.tm_hour, Visit.visitTime.tm_min, Visit.visitTime.tm_sec);
+				System::String^ dateTimeString = visitTime.ToString("yyyy-MM-dd HH:mm:ss");
+				std::string spec;
+				for (Doctor& Doctor : doctors)
+				{
+					if (Doctor.docID == Visit.doctorID)
+					{
+						spec = Doctor.docSpeciality;
+					}
+				}
+				System::String^ fullInfoString = gcnew System::String(dateTimeString + " - " + ParseToStringorSTDSTRING(spec));
+				visitListM->Add(fullInfoString);
+				//Сортируємо
+				sortVisits(visitListM);
+			}
+		}
+		for each (System::String ^ visitString in visitListM)
+		{
+			CbLast->Items->Add(visitString);
+		}
+		//Додаємо на комбо бокс візити
+		for each (System::String ^ visitString in visitList)
+		{
+			CbFuture->Items->Add(visitString);
+		}
+
 	}
 	private: System::Void TbOld_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 	}

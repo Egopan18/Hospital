@@ -1214,6 +1214,40 @@ void Visit::write_visitrow(const std::string& Filename)
 	}
 }
 
+
+
+void Visit::update_visitStatus()
+{
+	if (!connect_todb())
+	{
+		std::cerr << "Failed to connect to the database." << std::endl;
+		return;
+	}
+
+	try
+	{
+		sql::PreparedStatement* prep_stmt;
+
+		// Перевіряємо, чи існує ID візиту. Якщо так, то оновлюємо лише статус візиту.
+		if (visitID != 0)
+		{
+			prep_stmt = con->prepareStatement("UPDATE visits SET visitStatus=? WHERE visitID=?");
+			prep_stmt->setBoolean(1, this->visitStatus);
+			prep_stmt->setInt(2, visitID);
+			prep_stmt->execute();
+		}
+
+		delete prep_stmt;
+		close_connection();
+	}
+	catch (sql::SQLException& e)
+	{
+		std::cerr << "Error updating visit status: " << e.what() << std::endl;
+	}
+}
+
+
+
 void Visit::write_visitrow()
 {
 	if (!connect_todb())
@@ -1240,8 +1274,9 @@ void Visit::write_visitrow()
 		prep_stmt->setInt(2, this->doctorID);
 
 		char dateStr[11]; // "YYYY-MM-DD\0"
-		std::strftime(dateStr, 11, "%Y-%m-%d", &this->visitDate);
+		std::strftime(dateStr, sizeof(dateStr), "%Y-%m-%d", &this->visitDate);
 		prep_stmt->setString(3, dateStr);
+		std::cout << "Year: " << this->visitDate.tm_year << ", Month: " << this->visitDate.tm_mon << std::endl;
 
 		char timeStr[9]; //"HH:MM:SS\0"
 		std::strftime(timeStr, 9, "%H:%M:%S", &this->visitTime);
@@ -1252,6 +1287,7 @@ void Visit::write_visitrow()
 		prep_stmt->setString(7, this->prescription);
 
 		prep_stmt->execute();
+		std::cout << "Visit data written to the database successfully." << std::endl;
 
 		delete prep_stmt;
 

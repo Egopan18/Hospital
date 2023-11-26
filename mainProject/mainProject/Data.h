@@ -156,7 +156,7 @@ public:
 
 	void write_visitrow(const std::string& Filename);
 	void write_visitrow();
-
+	void update_visitStatus();
 	friend void visittable_toDB(const std::string& Filename);
 
 	void print_visit();
