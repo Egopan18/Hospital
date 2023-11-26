@@ -192,3 +192,27 @@ std::string standardizePhoneNumberUA(const std::string& rawNumber) {
 
 	return formattedNumber;
 }
+//Сортування візитів
+void sortVisits(System::Collections::Generic::List<System::String^>^ visits)
+{
+	for (int i = 0; i < visits->Count - 1; i++)
+	{
+		int minIndex = i;
+		for (int j = i + 1; j < visits->Count; j++)
+		{
+			// Порівняння за датами в рядках
+			if (System::String::Compare(visits[j]->Substring(0, 19), visits[minIndex]->Substring(0, 19)) < 0)
+			{
+				minIndex = j;
+			}
+		}
+		// Обмін елементів
+		if (minIndex != i)
+		{
+			System::String^ temp = visits[minIndex];
+			visits[minIndex] = visits[i];
+			visits[i] = temp;
+		}
+	}
+}
+

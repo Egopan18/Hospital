@@ -121,7 +121,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\..\Downloads\pugixml-1.14\pugixml-1.14\src\pugixml.cpp" />
     <ClCompile Include="AboutAppForm.cpp" />
     <ClCompile Include="Algorithms.cpp" />
     <ClCompile Include="Classes.cpp" />
@@ -129,12 +128,11 @@
     <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="LogForm.cpp" />
     <ClCompile Include="NewRecordForm.cpp" />
+    <ClCompile Include="pugixml.cpp" />
     <ClCompile Include="SignForm.cpp" />
     <ClCompile Include="StartForm.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\..\Downloads\pugixml-1.14\pugixml-1.14\src\pugiconfig.hpp" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\..\Downloads\pugixml-1.14\pugixml-1.14\src\pugixml.hpp" />
     <ClInclude Include="AboutAppForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -149,6 +147,8 @@
     <ClInclude Include="NewRecordForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="pugiconfig.hpp" />
+    <ClInclude Include="pugixml.hpp" />
     <ClInclude Include="SignForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>

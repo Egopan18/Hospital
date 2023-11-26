@@ -26,3 +26,5 @@ public:
 	//хешування
 	std::string getHash(std::string userString, int lengthHash);
 };
+//Сортування візитів
+void sortVisits(System::Collections::Generic::List<System::String^>^ visits);

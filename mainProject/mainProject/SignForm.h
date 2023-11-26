@@ -319,8 +319,8 @@ namespace mainProject {
 #pragma endregion
 
 	private: System::Void BSign_Click(System::Object^ sender, System::EventArgs^ e) {
-		User obj; // Створюємо об'єкт класу User для збереження даних користувача.
-		Hash pass; // Створюємо об'єкт класу Hash для обробки пароля.
+		User obj; 
+		Hash pass; 
 		std::vector<User> users;
 
 		System::String^ TbUser = TbName->Text;
@@ -339,15 +339,9 @@ namespace mainProject {
 		std::tm Birthday = ParseToTm(TbBirthday);
 		std::string Password = ParseToStringorSTDSTRING(TbPassword);
 
-		std::string phone = Telephone;
 		
 
-		if (phone == "Invalid Number")
-		{
-			// Виводимо сповіщення користувачу у випадку невірного формату номера телефону.
-			MessageBox::Show("Неправильний формат телефонного номера. Будь ласка, введіть правильний номер.", "Помилка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			return;
-		}
+
 
 		// Заповнюємо об'єкт користувача даними та обчислюємо вік.
 
@@ -355,6 +349,13 @@ namespace mainProject {
 		obj.userSurname = Surname;
 		obj.userMiddleName = MiddleName;
 		Telephone = standardizePhoneNumberUA(Telephone); // Стандартизуємо формат номеру телефону
+		if (Telephone == "Invalid Number")
+		{
+			// Виводимо сповіщення користувачу у випадку невірного формату номера телефону.
+			MessageBox::Show("Неправильний формат телефонного номера. Будь ласка, введіть правильний номер.", "Помилка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+
 		obj.userPhone = Telephone;
 		obj.userBirthDate = Birthday;
 		obj.userPassword = pass.getHash(Password, 6); // Обчислюємо хеш пароля.
@@ -363,7 +364,7 @@ namespace mainProject {
 		obj.write_userrow(); // Записуємо дані користувача.
 
 		System::String^ Pass = ParseToStringorSTDSTRING(Password);
-		LogForm^ logForm = gcnew LogForm(obj, Pass, phone);
+		LogForm^ logForm = gcnew LogForm(obj, Pass, Telephone);
 
 		this->Hide();
 
