@@ -1,7 +1,8 @@
 #pragma once
-#include <vector>
+#include "Include.h"
 #include "Data.h"
 #include "Algorithms.h"
+
 namespace mainProject {
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -754,7 +755,7 @@ namespace mainProject {
 			DayOfWeek dayOfWeek = dateTime->DayOfWeek;
 			int idHospital;
 
-			//БОЛЬНИЧКА РАБОТАЕМ
+			//ЛІКАРНЯ ПЕРЕБОР
 			if (cLbHospital->CheckedIndices->Count > 0)
 			{
 				int checkedIndex = cLbHospital->CheckedIndices[0];
@@ -762,42 +763,40 @@ namespace mainProject {
 
 				for (size_t j = 0; j < hospitals.size(); j++)
 				{
-					// Если имя больницы совпадает с выбранным элементом
+					// Якщо ім'я лікарні збігається з вибраним елементом
 					if (ParseToStringorSTDSTRING(hospitals[j].hospitalName) == selectedHospital)
 					{
-						//Получаем id больницы
+						//id лікарні
 						idHospital = hospitals[j].hospitalID;
 						break;
 					}
 				}
 			}
 
-			//ЧИТАЕМ ЧЕК БОКС СПЕЦИАЛЬНОСТЕЙ
+			//ЧИТАЄМО ЧЕК БОКС СПЕЦІАЛЬНОСТЕЙ 
 			for (int i = 0; i < cLbDocType->CheckedItems->Count; i++)
 			{
-				// Добавляем строковое значение отмеченного элемента в список
+				
 				checkedDocTypes->Add(cLbDocType->CheckedItems[i]->ToString());
 			}
 
-			//ДОКТОРА ЗАПИСЬ В ЧЕКБОКС
+			//ЗАПИС ДО ЧЕК БОКСУ
 			cLbDoc->Items->Clear();
-			// Перебираем всех докторов в списке
-		// Перебираем всех докторов в списке
+
+		// Перебираємо лікарів
 			for (size_t i = 0; i < doctors.size(); i++)
 			{
-				// Если место работы доктора совпадает с id больницы
+				// Якщо лікарь працює в цій лікарні
 				if (doctors[i].docWorkPlace == idHospital)
 				{
-					// Преобразуем DayOfWeek в строку
 					String^ dayOfWeekStr = Enum::GetName(DayOfWeek::typeid, dayOfWeek);
 
-					// Преобразуем std::string в System::String^ для сравнения
 					System::String^ workingDays = gcnew System::String(doctors[i].docWorkingDays.c_str());
 
-					// Проверяем, работает ли врач в этот день недели
+					// Чи працює врач в цей день
 					if (workingDays->Contains(dayOfWeekStr))
 					{
-						// Проверяем, что выбранное время входит в рабочие часы врача
+						// Перевіряємо, що обраний час входить в робочі часи лікаря
 						bool isWorkingHour = hour > doctors[i].docWorkingHoursStart.tm_hour &&
 							hour < doctors[i].docWorkingHoursEnd.tm_hour;
 						bool isWorkingStartMinute = hour == doctors[i].docWorkingHoursStart.tm_hour &&
@@ -811,7 +810,7 @@ namespace mainProject {
 							{
 								if (ParseToStringorSTDSTRING(doctors[i].docSpeciality) == type)
 								{
-									// Добавляем доктора в CheckedListBox
+									// Додаємо лікаря в  CheckedListBox
 									std::string fullName = doctors[i].docName + " " + doctors[i].docSurname + " " +
 										doctors[i].docMiddleName + " " + doctors[i].docSpeciality;
 

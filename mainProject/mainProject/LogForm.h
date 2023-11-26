@@ -1,8 +1,9 @@
 #pragma once
+#include "Include.h"
 #include "Data.h"
 #include "Algorithms.h"
 #include "NewRecordForm.h"
-#include <ctime>
+
 
 namespace mainProject {
 	using namespace System;

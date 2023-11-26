@@ -4,17 +4,6 @@
 
 #include "Include.h"
 
-#include <jdbc/mysql_driver.h>
-#include <jdbc/cppconn/driver.h>
-
-#include <jdbc/mysql_connection.h>
-#include <jdbc/cppconn/statement.h>
-#include <jdbc/cppconn/prepared_statement.h>
-#include <jdbc/cppconn/resultset.h>
-
-#include <nlohmann/json.hpp>
-#include "pugixml.hpp"
-
 using json = nlohmann::json;
 
 bool connect_todb();

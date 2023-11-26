@@ -45,8 +45,8 @@ System::DateTime^ ConvertToDateTime(std::tm dateInfo)
 }
 System::DateTime ConvertTmToDateTime(std::tm tmStruct)
 {
-	int year = tmStruct.tm_year;  // tm_year is years since 1900
-	int month = tmStruct.tm_mon;     // tm_mon is 0-based (0 = January)
+	int year = tmStruct.tm_year;  
+	int month = tmStruct.tm_mon;  
 	int day = tmStruct.tm_mday;
 
 	return System::DateTime(year, month, day);
@@ -147,10 +147,10 @@ void SortHospitalsByRating(std::vector<Hospital>& hospitals, array<System::Strin
 	for (int i = 0; i < n - 1; i++) {
 		for (int j = 0; j < n - i - 1; j++) {
 			if (hospitals[j].hospitalRating < hospitals[j + 1].hospitalRating) {
-				// Обмен значений больниц
+				// Обмін значеннями лікарень
 				std::swap(hospitals[j], hospitals[j + 1]);
 
-				// Обмен значений в dataList
+				// Обмін значеннями в dataList
 				System::String^ temp = dataList[j];
 				dataList[j] = dataList[j + 1];
 				dataList[j + 1] = temp;
@@ -215,4 +215,37 @@ void sortVisits(System::Collections::Generic::List<System::String^>^ visits)
 		}
 	}
 }
+//Надійність пароля
+int CheckPasswordStrength(const std::string& input)
+{
+	//Ініціалізаціія
+	int strengthLevel = 0;
+	bool hasLower = false, hasUpper = false;
+	bool hasDigit = false, hasSpecialChar = false;
+	std::string normalChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ";
 
+	for (char ch : input)
+	{
+		if (islower(ch)) hasLower = true;
+		if (isupper(ch)) hasUpper = true;
+		if (isdigit(ch)) hasDigit = true;
+		if (normalChars.find(ch) == std::string::npos) hasSpecialChar = true;
+	}
+
+	// Обчилсюємо надійність пароля
+	int criteriaMet = hasLower + hasUpper + hasDigit + hasSpecialChar;
+	if (criteriaMet >= 3 && input.length() >= 8)
+	{
+		strengthLevel = 3; // Сильний
+	}
+	else if (criteriaMet >= 2 && input.length() >= 6)
+	{
+		strengthLevel = 2;
+	}
+	else if (criteriaMet > 0)
+	{
+		strengthLevel = 1;
+	}
+
+	return strengthLevel;
+}

@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Include.h"
 #include "LogForm.h"
 #include "SignForm.h"
 #include "AboutAppForm.h"
-#include <msclr/marshal_cppstd.h>
 #include "Data.h"
 #include "Algorithms.h"
+
 namespace mainProject {
 	using namespace System;
 	using namespace System::ComponentModel;

@@ -1,9 +1,8 @@
 #pragma once
+#include "Include.h"
 #include "LogForm.h"
 #include "Algorithms.h"
 #include "Data.h"
-#include <msclr/marshal_cppstd.h>
-#include <ctime>
 
 namespace mainProject {
 	using namespace System;
@@ -22,6 +21,9 @@ namespace mainProject {
 		SignForm(void)
 		{
 			InitializeComponent();
+			//Ініціалізація 
+			progressBarPasswordStrength->Value = 1;
+
 			//
 			//TODO: Add the constructor code here
 			//
@@ -67,6 +69,8 @@ namespace mainProject {
 	private: System::Windows::Forms::Label^ lName;
 	private: System::Windows::Forms::Label^ linfo;
 	private: System::Windows::Forms::PictureBox^ picBox;
+	private: System::Windows::Forms::ProgressBar^ progressBarPasswordStrength;
+	private: System::Windows::Forms::Label^ passwordStrong;
 
 	protected:
 
@@ -102,6 +106,8 @@ namespace mainProject {
 			this->lName = (gcnew System::Windows::Forms::Label());
 			this->linfo = (gcnew System::Windows::Forms::Label());
 			this->picBox = (gcnew System::Windows::Forms::PictureBox());
+			this->progressBarPasswordStrength = (gcnew System::Windows::Forms::ProgressBar());
+			this->passwordStrong = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picBox))->BeginInit();
 			this->SuspendLayout();
 			//
@@ -144,6 +150,8 @@ namespace mainProject {
 			this->mTbPassw->PasswordChar = '*';
 			this->mTbPassw->Size = System::Drawing::Size(108, 20);
 			this->mTbPassw->TabIndex = 14;
+			this->mTbPassw->MaskInputRejected += gcnew System::Windows::Forms::MaskInputRejectedEventHandler(this, &SignForm::mTbPassw_MaskInputRejected);
+			this->mTbPassw->TextChanged += gcnew System::EventHandler(this, &SignForm::mTbPassw_TextChanged_1);
 			this->mTbPassw->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &SignForm::mTbPassw_MouseMove);
 			//
 			// TbPatr
@@ -283,11 +291,31 @@ namespace mainProject {
 			this->picBox->TabIndex = 31;
 			this->picBox->TabStop = false;
 			//
+			// progressBarPasswordStrength
+			//
+			this->progressBarPasswordStrength->Location = System::Drawing::Point(141, 346);
+			this->progressBarPasswordStrength->Maximum = 3;
+			this->progressBarPasswordStrength->Name = L"progressBarPasswordStrength";
+			this->progressBarPasswordStrength->Size = System::Drawing::Size(148, 12);
+			this->progressBarPasswordStrength->TabIndex = 32;
+			this->progressBarPasswordStrength->Value = 1;
+			//
+			// passwordStrong
+			//
+			this->passwordStrong->AutoSize = true;
+			this->passwordStrong->Location = System::Drawing::Point(71, 346);
+			this->passwordStrong->Name = L"passwordStrong";
+			this->passwordStrong->Size = System::Drawing::Size(35, 13);
+			this->passwordStrong->TabIndex = 33;
+			this->passwordStrong->Text = L"label1";
+			//
 			// SignForm
 			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(534, 511);
+			this->Controls->Add(this->passwordStrong);
+			this->Controls->Add(this->progressBarPasswordStrength);
 			this->Controls->Add(this->linfo);
 			this->Controls->Add(this->lPatr);
 			this->Controls->Add(this->lSurname);
@@ -319,8 +347,8 @@ namespace mainProject {
 #pragma endregion
 
 	private: System::Void BSign_Click(System::Object^ sender, System::EventArgs^ e) {
-		User obj; 
-		Hash pass; 
+		User obj;
+		Hash pass;
 		std::vector<User> users;
 
 		System::String^ TbUser = TbName->Text;
@@ -330,18 +358,13 @@ namespace mainProject {
 		System::DateTime^ TbBirthday = dateBith->Value;
 		System::String^ TbPassword = mTbPassw->Text;
 
-	
-
 		std::string Name = ParseToStringorSTDSTRING(TbUser);
 		std::string Surname = ParseToStringorSTDSTRING(TbSurname);
 		std::string MiddleName = ParseToStringorSTDSTRING(TbPat);
 		std::string Telephone = ParseToStringorSTDSTRING(TbTelephone);
 		std::tm Birthday = ParseToTm(TbBirthday);
 		std::string Password = ParseToStringorSTDSTRING(TbPassword);
-
-		
-
-
+		int strengthLevel = CheckPasswordStrength(Password);
 
 		// Заповнюємо об'єкт користувача даними та обчислюємо вік.
 
@@ -358,6 +381,12 @@ namespace mainProject {
 
 		obj.userPhone = Telephone;
 		obj.userBirthDate = Birthday;
+		if (strengthLevel <= 1)
+		{
+			// Виводимо сповіщення користувачу у випадку слабкого паролю.
+			MessageBox::Show("Слабкий пароль, введіть краще", "Ненадійний пароль", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			return;
+		}
 		obj.userPassword = pass.getHash(Password, 6); // Обчислюємо хеш пароля.
 		obj.userAge = AgeCalculator(obj, Birthday); // Обчислюємо вік користувача.
 
@@ -431,6 +460,31 @@ namespace mainProject {
 		}
 	}
 	private: System::Void SignForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void mTbPassw_MaskInputRejected(System::Object^ sender, System::Windows::Forms::MaskInputRejectedEventArgs^ e) {
+	}
+		   //При зміні тексту, ми будемо обчислювати надійність пароля.
+	private: System::Void mTbPassw_TextChanged_1(System::Object^ sender, System::EventArgs^ e) {
+		int strength = CheckPasswordStrength(ParseToStringorSTDSTRING(mTbPassw->Text));
+		progressBarPasswordStrength->Value = strength; 
+		switch (strength)
+		{
+		case 1:
+			passwordStrong->Text = "Слабкий";
+			passwordStrong->ForeColor = System::Drawing::Color::Red;
+			progressBarPasswordStrength->ForeColor = System::Drawing::Color::Red;
+			break;
+		case 2:
+			passwordStrong->Text = "Середній";
+			passwordStrong->ForeColor = System::Drawing::Color::Orange;
+			progressBarPasswordStrength->ForeColor = System::Drawing::Color::Orange;
+			break;
+		case 3:
+			passwordStrong->Text = "Сильний";
+			passwordStrong->ForeColor = System::Drawing::Color::Green;
+			progressBarPasswordStrength->ForeColor = System::Drawing::Color::Green;
+			break;
+		}
 	}
 	};
 }
