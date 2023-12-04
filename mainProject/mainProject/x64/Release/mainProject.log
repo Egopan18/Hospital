@@ -1,0 +1,114 @@
+﻿  AboutAppForm.cpp
+  Algorithms.cpp
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(114,25): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(135,20): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(139,27): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(190,8): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  Classes.cpp
+  Data.cpp
+  Exceptions.cpp
+  LogForm.cpp
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(83,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "LogForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(89,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "LogForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(104,12): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "LogForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(127,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "LogForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(731,65): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+  (компиляция исходного файла "LogForm.cpp")
+  
+  NewRecordForm.cpp
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(83,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "NewRecordForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(89,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "NewRecordForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(104,12): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "NewRecordForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(127,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "NewRecordForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(731,65): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+  (компиляция исходного файла "NewRecordForm.cpp")
+  
+  pugixml.cpp
+  SignForm.cpp
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(83,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "SignForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(89,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "SignForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(104,12): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "SignForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(127,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "SignForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(731,65): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+  (компиляция исходного файла "SignForm.cpp")
+  
+  StartForm.cpp
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(83,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "StartForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(89,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "StartForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(104,12): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "StartForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(127,14): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  (компиляция исходного файла "StartForm.cpp")
+  
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\NewRecordForm.h(731,65): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+  (компиляция исходного файла "StartForm.cpp")
+  
+  .NETFramework,Version=v4.7.2.AssemblyAttributes.cpp
+  Создание кода...
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(60): warning C4715: get_filetype: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(331): warning C4715: User::read_userrow: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(393): warning C4715: Hospital::read_hospitalrow: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(619): warning C4715: Doctor::get_workingdays: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(805): warning C4715: Doctor::read_doctorrow: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(1863): warning C4715: read_doctortable: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(282): warning C4715: User::read_userrow: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(448): warning C4715: Hospital::read_hospitalrow: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(744): warning C4715: Doctor::read_doctorrow: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(1445): warning C4715: read_usertable: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(1597): warning C4715: read_hospitaltable: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(1806): warning C4715: read_doctortable: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(28): warning C4715: ParseToStringorSTDSTRING: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(186): warning C4715: Hash::getHash: значение возвращается не при всех путях выполнения
+  AboutAppForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
+mysqlcppconn-static.lib(mysql_art_resultset.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_art_resultset.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_prepared_statement.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_prepared_statement.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_connection.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_connection.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_util.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_util.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_art_rset_metadata.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_art_rset_metadata.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_resultbind.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_resultbind.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_warning.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_warning.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_ps_resultset.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_ps_resultset.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_ps_resultset_metadata.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_ps_resultset_metadata.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_parameter_metadata.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_parameter_metadata.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_uri.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_uri.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_metadata.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_metadata.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_statement.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_statement.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_debug.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_debug.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_resultset.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_resultset.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_resultset_metadata.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_resultset_metadata.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_driver.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_driver.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_native_driver_wrapper.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_native_driver_wrapper.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_client_api.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_client_api.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_native_connection_wrapper.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_native_connection_wrapper.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_native_resultset_wrapper.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_native_resultset_wrapper.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+mysqlcppconn-static.lib(mysql_native_statement_wrapper.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_native_statement_wrapper.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
+  mainProject.vcxproj -> F:\EDC\3sem\KURSA4\Exceptions\mainProject\x64\Release\mainProject.exe
