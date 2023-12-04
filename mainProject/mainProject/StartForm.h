@@ -390,7 +390,6 @@ namespace mainProject {
 		aboutForm->Show();
 	}
 
-
 	private: System::Void TbTel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		toolTip1->SetToolTip(TbTel, "Введіть тут свій телефон ");
 	}

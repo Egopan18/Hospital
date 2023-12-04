@@ -414,14 +414,6 @@ namespace mainProject {
 			return;
 		}
 
-
-		//if (Telephone == "Invalid Number")
-		//{
-		//	// Виводимо сповіщення користувачу у випадку невірного формату номера телефону.
-		//	MessageBox::Show("Неправильний формат телефонного номера. Будь ласка, введіть правильний номер.", "Помилка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-		//	return;
-		//}
-
 		obj.userPhone = Telephone;
 		obj.userBirthDate = Birthday;
 		if (strengthLevel <= 1)

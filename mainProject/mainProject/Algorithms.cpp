@@ -45,7 +45,7 @@ System::String^ ParseToStringorSTDSTRING(std::string data)
 	return parse_data;
 }
 
-//Конвертація (рік, місяць, день)
+	//Конвертація (рік, місяць, день)
 System::DateTime^ ConvertToDateTime(std::tm dateInfo)
 {
 	int year = dateInfo.tm_year + 1900;
@@ -62,7 +62,7 @@ System::DateTime ConvertTmToDateTime(std::tm tmStruct)
 
 	return System::DateTime(year, month, day);
 }
-//Функції хешування паролю
+	//Функції хешування паролю
 int Hash::receivingCodes(int x)
 {
 	//здвигаємо значення в діапазон таблиці ASCII
@@ -184,7 +184,7 @@ std::string Hash::getHash(std::string userpass, int lengthHash)
 		std::cerr << "Another error: " << e.what() << std::endl;
 	}
 }
-//Сортування за рейтингом
+	//Сортування за рейтингом
 void SortHospitalsByRating(std::vector<Hospital>& hospitals, array<System::String^>^ dataList)
 {
 	int n = hospitals.size();
@@ -202,7 +202,7 @@ void SortHospitalsByRating(std::vector<Hospital>& hospitals, array<System::Strin
 		}
 	}
 }
-//Стандартизація номера
+	//Стандартизація номера
 std::string standardizePhoneNumberUA(const std::string& rawNumber) {
 	std::string cleanNumber;
 
@@ -237,7 +237,7 @@ std::string standardizePhoneNumberUA(const std::string& rawNumber) {
 
 	return formattedNumber;
 }
-//Сортування візитів
+	//Сортування візитів
 void sortVisits(System::Collections::Generic::List<System::String^>^ visits)
 {
 	for (int i = 0; i < visits->Count - 1; i++)
@@ -260,7 +260,7 @@ void sortVisits(System::Collections::Generic::List<System::String^>^ visits)
 		}
 	}
 }
-//Надійність пароля
+	//Надійність пароля
 int CheckPasswordStrength(const std::string& input)
 {
 	//Ініціалізаціія
