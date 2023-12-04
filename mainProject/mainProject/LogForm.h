@@ -696,6 +696,7 @@ namespace mainProject {
 				//Сортируємо
 				sortVisits(visitList);
 			}
+
 			//Минулі завантаження в комбо бокс
 			if (Visit.visitStatus == 0 && Visit.clientID == UserID)
 			{
@@ -711,6 +712,7 @@ namespace mainProject {
 				}
 				System::String^ fullInfoString = gcnew System::String(dateTimeString + " - " + ParseToStringorSTDSTRING(spec));
 				visitListM->Add(fullInfoString);
+
 				//Сортуємо
 				sortVisits(visitListM);
 			}

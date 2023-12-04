@@ -203,7 +203,7 @@ namespace mainProject {
 				selectedSpec->Remove(selectedItem);
 			}
 
-			// Обновляем
+			// Оновлюємо
 			UpdateClinicsList();
 		}
 		// Оновлення списку лікарень
