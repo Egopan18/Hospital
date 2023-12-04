@@ -39,3 +39,8 @@ const char* Exceptions::PhoneFormatException::what() const throw() {
     std::cerr << "Sign in/up error: Incorrect number format" << std::endl;
     return "Неправильний формат номеру!";
 }
+
+const char* Exceptions::PhoneNumberExistsException::what() const throw() {
+    std::cerr << "Sign up error: Existing phone number." << std::endl;
+    return "Введений номер телефону вже зареєстрований!";
+}

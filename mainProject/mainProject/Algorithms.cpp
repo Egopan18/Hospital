@@ -8,12 +8,13 @@ using namespace System;
      // Функція для розрахунку віку
 int AgeCalculator(User& obj, tm Date)
 {
-	if (Date.tm_year < 0 || Date.tm_year + 1900 > DateTime::Now.Year) {
-		DateTime now = DateTime::Now;
-		int age = now.Year - (Date.tm_year + 1900);
+	DateTime now = DateTime::Now;
+	int age = now.Year - Date.tm_year - 1900;
+
+	if (age < 120 && age > 0) {
 		return age;
 	}
-	
+
 	throw Exceptions::AgeCalculationException();
 	return -1;
 }

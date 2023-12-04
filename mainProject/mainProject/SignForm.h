@@ -360,6 +360,8 @@ namespace mainProject {
 	private: System::Void BSign_Click(System::Object^ sender, System::EventArgs^ e) {
 		System::String^ errorMsg;
 
+		std::vector<User> UsVec1 = read_usertable();
+
 		User obj;
 		Hash pass;
 		std::vector<User> users;
@@ -386,19 +388,37 @@ namespace mainProject {
 			return;
 		}
 
+		if (Password == "") {
+			std::cerr << "Sign up error: Empty password." << std::endl;
+			MessageBox::Show("Введіть пароль!", "Помилка реєстрації", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+
 		obj.userName = Name;
 		obj.userSurname = Surname;
 		obj.userMiddleName = MiddleName;
 
 
-		//Telephone = standardizePhoneNumberUA(Telephone); // Стандартизуємо формат номеру телефону
-
+				// Перевірка номеру телефону
 		try
 		{
 			if (Telephone != "")
+			{ 
 				Telephone = standardizePhoneNumberUA(Telephone);
-			else
+
+				for (const User& user : UsVec1)
+				{
+					// Перевіряємо, чи співпадає номер телефону
+					if (Telephone == standardizePhoneNumberUA(user.userPhone))
+					{
+						throw Exceptions::PhoneNumberExistsException();
+						break;
+					}
+				}
+			}	
+			else {
 				throw Exceptions::PhoneFormatException();
+			}	
 		}
 		catch (const Exceptions::PhoneFormatException& ex)
 		{
@@ -406,9 +426,15 @@ namespace mainProject {
 			MessageBox::Show(errorMsg, "Помилка реєстрації", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
+		catch (const Exceptions::PhoneNumberExistsException& ex)
+		{
+			errorMsg = gcnew System::String(ex.what());
+			MessageBox::Show(errorMsg, "Помилка реєстрації", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			return;
+		}
 		catch (const std::exception& ex)
 		{
-			std::cerr << "Sign up error: " << ex.what() << std::endl;
+			std::cerr << "Sign up phone error: " << ex.what() << std::endl;
 			errorMsg = gcnew System::String(ex.what());
 			MessageBox::Show(errorMsg, "Помилка реєстрації", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
@@ -428,6 +454,7 @@ namespace mainProject {
 		try
 		{
 			obj.userAge = AgeCalculator(obj, Birthday); // Обчислюємо вік користувача.
+			std::cerr << obj.userAge << std::endl;
 		}
 		catch (const Exceptions::AgeCalculationException& ex)
 		{
@@ -437,20 +464,13 @@ namespace mainProject {
 		}
 		catch (const std::exception& ex)
 		{
-			std::cerr << "Sign up error: " << ex.what() << std::endl;
+			std::cerr << "Sign up age error: " << ex.what() << std::endl;
 			errorMsg = gcnew System::String(ex.what());
 			MessageBox::Show(errorMsg, "Помилка реєстрації", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
 		
-
 		obj.write_userrow(); // Записуємо дані користувача.
-
-		if (Password == "") {
-			std::cerr << "Sign up error: Empty password." << std::endl;
-			MessageBox::Show("Введіть пароль!", "Помилка реєстрації", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			return;
-		}
 
 		System::String^ Pass = ParseToStringorSTDSTRING(Password);
 
