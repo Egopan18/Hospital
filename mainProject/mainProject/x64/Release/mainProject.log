@@ -1,10 +1,10 @@
-﻿  Algorithms.cpp
-F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(115,25): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(136,20): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(140,27): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(191,8): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(29): warning C4715: ParseToStringorSTDSTRING: значение возвращается не при всех путях выполнения
-F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Algorithms.cpp(187): warning C4715: Hash::getHash: значение возвращается не при всех путях выполнения
+﻿  Data.cpp
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(61): warning C4715: get_filetype: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(369): warning C4715: User::read_userrow: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(431): warning C4715: Hospital::read_hospitalrow: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(695): warning C4715: Doctor::get_workingdays: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(900): warning C4715: Doctor::read_doctorrow: значение возвращается не при всех путях выполнения
+F:\EDC\3sem\KURSA4\Exceptions\mainProject\mainProject\Data.cpp(2115): warning C4715: read_doctortable: значение возвращается не при всех путях выполнения
   AboutAppForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
 mysqlcppconn-static.lib(mysql_art_resultset.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_art_resultset.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных
 mysqlcppconn-static.lib(mysql_prepared_statement.obj) : warning LNK4099: "" PDB не найден с "mysqlcppconn-static.lib(mysql_prepared_statement.obj)" или на ""; компоновка объекта выполняется как при отсутствии отладочных данных

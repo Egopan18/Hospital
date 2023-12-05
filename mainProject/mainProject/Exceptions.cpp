@@ -44,3 +44,7 @@ const char* Exceptions::PhoneNumberExistsException::what() const throw() {
     std::cerr << "Sign up error: Existing phone number." << std::endl;
     return "¬ведений номер телефону вже зареЇстрований!";
 }
+
+const char* Exceptions::FileNameException::what() const throw() {
+    return "Data error: Non existing file name.";
+}
