@@ -45,6 +45,12 @@ const char* Exceptions::PhoneNumberExistsException::what() const throw() {
     return "¬ведений номер телефону вже зареЇстрований!";
 }
 
+//      Data files exceptions
+
 const char* Exceptions::FileNameException::what() const throw() {
     return "Data error: Non existing file name.";
+}
+
+const char* Exceptions::DataFilesException::what() const throw() {
+    return "Data error: Data files not found.";
 }

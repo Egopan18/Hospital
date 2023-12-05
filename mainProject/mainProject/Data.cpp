@@ -5,7 +5,7 @@
 
 const std::string dbHost = "tcp://127.0.0.1:3306";
 const std::string dbUser = "root";
-const std::string dbPassword = "2203"; //��������� ��� �� ���� ������. ��������� �� ���� ����� ����� ��
+const std::string dbPassword = "2203";
 const std::string dbName = "hospitaldbl";
 sql::mysql::MySQL_Driver* driver;
 sql::Connection* con;
@@ -22,7 +22,7 @@ bool connect_todb()
 	}
 	catch (sql::SQLException& e)
 	{
-		std::cerr << "Connection failed. Error: " << e.what() << std::endl;
+		std::cerr << "Connection to DB failed. Error: " << e.what() << std::endl;
 		return false;
 	}
 }
@@ -58,6 +58,8 @@ std::string get_filetype(std::string filename)
 		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
 		return extension;
 	}
+
+	return "";
 }
 
 //_+_+_+_+_+_+_+_+_+_+_+_+_+_+
@@ -83,7 +85,32 @@ void User::write_userrow()
 {
 	if (!connect_todb())
 	{
-		std::cerr << "Failed to connect to the database." << std::endl;
+		try {
+			std::cerr << "(Write user row) Data error: Failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("userfile.xml");
+			std::ifstream jsonfile("userfile.json");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				write_userrow("userfile.xml");
+			}
+			else if (jsonfile.is_open()) {
+				jsonfile.close();
+				write_userrow("userfile.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Write user row)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
 		return;
 	}
 
@@ -308,14 +335,15 @@ User User::read_userrow(int userID, const std::string& Filename)
 	{
 		std::cerr << "(User file read)" << ex.what() << std::endl;
 	}
-	catch (sql::SQLException& e)
+	catch (sql::SQLException& ex)
 	{
-		std::cerr << "Data error: writing user row in file: " << e.what() << std::endl;
+		std::cerr << "Data error: writing user row in file: " << ex.what() << std::endl;
 	}
 	catch (const std::exception& ex)
 	{
 		std::cerr << "Data error: " << ex.what() << std::endl;
 	}
+
 	return User();
 }
 
@@ -323,7 +351,32 @@ User User::read_userrow(int userID)
 {
 	if (!connect_todb())
 	{
-		std::cerr << "Failed to connect to the database." << std::endl;
+		try {
+			std::cerr << "(Read user row) Data error: Failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("userfile.xml");
+			std::ifstream jsonfile("userfile.json");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				read_userrow(userID, "userfile.xml");
+			}
+			else if (jsonfile.is_open()) {
+				jsonfile.close();
+				read_userrow(userID, "userfile.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Read user row)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
 		return User();
 	}
 
@@ -393,7 +446,32 @@ Hospital Hospital::read_hospitalrow(int hospitalID)
 {
 	if (!connect_todb())
 	{
-		std::cerr << "Failed to connect to the database." << std::endl;
+		try {
+			std::cerr << "(Read hospital row) Data error: Failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("hospitalfile.xml");
+			std::ifstream jsonfile("hospitalfile.json");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				return read_hospitalrow(hospitalID, "hospitalfile.xml");
+			}
+			else if (jsonfile.is_open()) {
+				jsonfile.close();
+				return read_hospitalrow(hospitalID, "hospitalfile.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Read hospital row)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
 		return Hospital();
 	}
 
@@ -428,6 +506,7 @@ Hospital Hospital::read_hospitalrow(int hospitalID)
 	{
 		std::cerr << "Error reading hospital data: " << e.what() << std::endl;
 	}
+	return Hospital();
 }
 
 Hospital Hospital::read_hospitalrow(int hospitalID, const std::string& Filename)
@@ -603,7 +682,32 @@ void Hospital::write_hospitalrow()
 {
 	if (!connect_todb())
 	{
-		std::cerr << "Failed to connect to the database." << std::endl;
+		try {
+			std::cerr << "(Write hospital row) Data error: Failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("hospitalfile.xml");
+			std::ifstream jsonfile("hospitalfile.xml");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				write_hospitalrow("hospitalfile.xml");
+			}
+			else if (jsonfile.is_open()) {
+				jsonfile.close();
+				write_hospitalrow("hospitalfile.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Write hospital row)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
 		return;
 	}
 
@@ -687,11 +791,15 @@ std::string Doctor::get_workingdays(int docID)
 			close_connection();
 			return result;
 		}
+		else {
+			std::cerr << "Data error: Error reading working days: " << std::endl;
+		}
 	}
 	catch (sql::SQLException& e)
 	{
 		std::cerr << "Data error: Error reading hospital data: " << e.what() << std::endl;
 	}
+	return "";
 }
 
 std::vector<int> Doctor::getContracts(int doctorID, std::vector<User> users)
@@ -730,6 +838,9 @@ std::vector<int> Doctor::getContractsDB(int doctorID)
 		}
 
 		close_connection();
+	}
+	else {
+		std::cerr << "Data error: DataBase connection error." << std::endl;
 	}
 
 	return contracts;
@@ -842,7 +953,32 @@ Doctor Doctor::read_doctorrow(int doctorID)
 {
 	if (!connect_todb())
 	{
-		std::cerr << "Failed to connect to the database." << std::endl;
+		try {
+			std::cerr << "(Read doctor row) Data error: Failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("doctorfile.xml");
+			std::ifstream jsonfile("doctorfile.json");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				return read_doctorrow(doctorID, "doctorfile.xml");
+			}
+			else if (jsonfile.is_open()) {
+				jsonfile.close();
+				return read_doctorrow(doctorID, "doctorfile.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Read doctor row)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
 		return Doctor();
 	}
 
@@ -897,6 +1033,7 @@ Doctor Doctor::read_doctorrow(int doctorID)
 	{
 		std::cerr << "Error reading doctor data: " << e.what() << std::endl;
 	}
+	return Doctor();
 }
 
 void Doctor::write_doctorrow(const std::string& Filename)
@@ -1037,6 +1174,37 @@ void Doctor::write_doctorrow(const std::string& Filename)
 
 void Doctor::write_doctorrow()
 {
+	if (!connect_todb())
+	{
+		try {
+			std::cerr << "(Write doctor row) Data error: Failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("doctorfile.xml");
+			std::ifstream jsonfile("doctorfile.json");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				write_doctorrow("doctorfile.xml");
+			}
+			else if (jsonfile.is_open()) {
+				jsonfile.close();
+				write_doctorrow("doctorfile.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Write doctor row)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
+		return;
+	}
+
 	//������ ��� ������� �� ��������, �� ������ �� ������ ���� ����
 	try
 	{
@@ -1225,6 +1393,7 @@ Visit Visit::read_visitrow(int visitID, const std::string& Filename)
 
 Visit Visit::read_visitrow(int visitID)
 {
+
 	Visit visit;
 
 	if (connect_todb())
@@ -1275,7 +1444,31 @@ Visit Visit::read_visitrow(int visitID)
 	}
 	else
 	{
-		std::cerr << "Failed to connect to the database." << std::endl;
+		try {
+			std::cerr << "(Read visit row) Data error: failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("visits.xml");
+			std::ifstream jsonfile("visits.json");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				return read_visitrow(visitID, "visits.xml");
+			}else if (jsonfile.is_open()) {
+				jsonfile.close();
+				return read_visitrow(visitID, "visits.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Read visit row)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
 	}
 
 	return visit;
@@ -1397,13 +1590,36 @@ void Visit::update_visitStatus()
 	}
 }
 
-
-
 void Visit::write_visitrow()
 {
 	if (!connect_todb())
 	{
-		std::cerr << "Failed to connect to the database." << std::endl;
+		try {
+			std::cerr << "(Write visit row) Data error: Failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("visits.xml");
+			std::ifstream jsonfile("visits.json");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				write_visitrow("visits.xml");
+			}
+			else if (jsonfile.is_open()) {
+				jsonfile.close();
+				write_visitrow("visits.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Write visit row)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
 		return;
 	}
 
@@ -1478,7 +1694,32 @@ std::vector<User> read_usertable()
 
 	if (!connect_todb())
 	{
-		std::cerr << "Failed to connect to the database." << std::endl;
+		try {
+			std::cerr << "(Read user table) Data error: Failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("userfile.xml");
+			std::ifstream jsonfile("userfile.json");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				return read_usertable("userfile.xml");
+			}
+			else if (jsonfile.is_open()) {
+				jsonfile.close();
+				return read_usertable("userfile.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Read user table)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
 		return users;
 	}
 
@@ -1815,7 +2056,32 @@ std::vector<Hospital> read_hospitaltable()
 
 	if (!connect_todb())
 	{
-		std::cerr << "Failed to connect to the database." << std::endl;
+		try {
+			std::cerr << "(Read hospital table) Data error: Failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("hospitalfile.xml");
+			std::ifstream jsonfile("hospitalfile.json");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				return read_hospitaltable("hospitalfile.xml");
+			}
+			else if (jsonfile.is_open()) {
+				jsonfile.close();
+				return read_hospitaltable("hospitalfile.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Read hospital table)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
 		return hosps;
 	}
 
@@ -2063,7 +2329,32 @@ std::vector<Doctor> read_doctortable()
 
 	if (!connect_todb())
 	{
-		std::cerr << "Failed to connect to the database." << std::endl;
+		try {
+			std::cerr << "(Read doctor table) Data error: Failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("doctorfile.xml");
+			std::ifstream jsonfile("doctorfile.json");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				return read_doctortable("doctorfile.xml");
+			}
+			else if (jsonfile.is_open()) {
+				jsonfile.close();
+				return read_doctortable("doctorfile.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Read doctor table)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
 		return doctors;
 	}
 
@@ -2112,6 +2403,7 @@ std::vector<Doctor> read_doctortable()
 	{
 		std::cerr << "Error reading hospital data: " << e.what() << std::endl;
 	}
+	return doctors;
 }
 
 void write_doctortable(const std::vector<Doctor>& doctors, const std::string& Filename)
@@ -2327,7 +2619,32 @@ std::vector<Visit> read_visittable()
 	}
 	else
 	{
-		std::cerr << "Failed to connect to the database." << std::endl;
+		try {
+			std::cerr << "(Read visits table) Data error: Failed to connect to the database." << std::endl;
+
+			std::ifstream xmlfile("visits.xml");
+			std::ifstream jsonfile("visits.json");
+
+			if (xmlfile.is_open()) {
+				xmlfile.close();
+				return read_visittable("visits.xml");
+			}
+			else if (jsonfile.is_open()) {
+				jsonfile.close();
+				return read_visittable("visits.json");
+			}
+			else {
+				throw Exceptions::DataFilesException();
+			}
+		}
+		catch (const Exceptions::DataFilesException& ex)
+		{
+			std::cerr << "(Read visits table)" << ex.what() << std::endl;
+		}
+		catch (const std::exception& ex)
+		{
+			std::cerr << "Data error: " << ex.what() << std::endl;
+		}
 	}
 
 	return visits;

@@ -55,9 +55,14 @@ public:
             virtual const char* what() const throw();
     };
 
-    //      Data exceptions
+    //      Data files exceptions
 
     class  FileNameException : public std::exception {
+    public:
+        virtual const char* what() const throw();
+    };
+
+    class  DataFilesException : public std::exception {
     public:
         virtual const char* what() const throw();
     };
