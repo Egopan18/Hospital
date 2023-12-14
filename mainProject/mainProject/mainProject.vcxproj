@@ -173,6 +173,17 @@
       <DependentUpon>StartForm.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="doctors.json" />
+    <None Include="hospitalfile.json" />
+    <None Include="userfile.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="doctorfile.xml" />
+    <Xml Include="hospitalfile.xml" />
+    <Xml Include="userfile.xml" />
+    <Xml Include="visits.xml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
