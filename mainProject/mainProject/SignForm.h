@@ -388,46 +388,15 @@ namespace mainProject {
 		obj.userMiddleName = MiddleName;
 
 
-				// Перевірка номеру телефону
-		try
+		Telephone = standardizePhoneNumberUA(Telephone); // Стандартизуємо формат номеру телефону
+		if (Telephone == "Invalid Number")
 		{
-			if (Telephone != "")
-			{ 
-				Telephone = standardizePhoneNumberUA(Telephone);
+			// Виводимо сповіщення користувачу у випадку невірного формату номера телефону.
+			MessageBox::Show("Неправильний формат телефонного номера. Будь ласка, введіть правильний номер.", "Помилка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		
 
-				for (const User& user : UsVec1)
-				{
-					// Перевіряємо, чи співпадає номер телефону
-					if (Telephone == standardizePhoneNumberUA(user.userPhone))
-					{
-						throw Exceptions::PhoneNumberExistsException();
-						break;
-					}
-				}
-			}	
-			else {
-				throw Exceptions::PhoneFormatException();
-			}	
-		}
-		catch (const Exceptions::PhoneFormatException& ex)
-		{
-			errorMsg = gcnew System::String(ex.what());
-			MessageBox::Show(errorMsg, "Помилка реєстрації", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			return;
-		}
-		catch (const Exceptions::PhoneNumberExistsException& ex)
-		{
-			errorMsg = gcnew System::String(ex.what());
-			MessageBox::Show(errorMsg, "Помилка реєстрації", MessageBoxButtons::OK, MessageBoxIcon::Warning);
-			return;
-		}
-		catch (const std::exception& ex)
-		{
-			std::cerr << "Sign up phone error: " << ex.what() << std::endl;
-			errorMsg = gcnew System::String(ex.what());
-			MessageBox::Show(errorMsg, "Помилка реєстрації", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			return;
-		}
 
 		obj.userPhone = Telephone;
 		obj.userBirthDate = Birthday;

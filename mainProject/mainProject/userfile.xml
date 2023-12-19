@@ -176,4 +176,16 @@
 		<userPhone>345-678-9012</userPhone>
 		<userPassword>password3</userPassword>
 	</user>
+	<user userID="0">
+		<userAge>23</userAge>
+		<userName>Vikrtor</userName>
+		<userSurname>Pomidor</userSurname>
+		<userMiddleName>Ogyrechov</userMiddleName>
+		<userPhone>+380965433908</userPhone>
+		<userPassword>0DqxDX</userPassword>
+		<userBirthYear>100</userBirthYear>
+		<userBirthMon>1</userBirthMon>
+		<userBirthDay>2</userBirthDay>
+		<userFamilyDoctor>1</userFamilyDoctor>
+	</user>
 </users>

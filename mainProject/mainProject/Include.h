@@ -5,9 +5,7 @@
 #include <jdbc/cppconn/statement.h>
 #include <jdbc/cppconn/prepared_statement.h>
 #include <jdbc/cppconn/resultset.h>
-
-
-#include <D:/Kursovoi/mainProject/mainProject/json.hpp>
+#include <nlohmann/json.hpp>
 
 #include "pugixml.hpp"
 

@@ -18,14 +18,18 @@ int AgeCalculator(User& obj, tm Date)
 	throw Exceptions::AgeCalculationException();
 	return -1;
 }
-
-	//Парсинг
-std::string ParseToStringorSTDSTRING(System::Object^ data)
+std::string ParseTmToString(const std::tm& timeStruct)
 {
-	if (System::String^ str = dynamic_cast<System::String^>(data))
-	{
-		return msclr::interop::marshal_as<std::string>(data->ToString());
-	}
+	char buffer[20];
+	std::sprintf(buffer, "%04d-%02d-%02d %02d:%02d:%02d",
+		timeStruct.tm_year + 1900,
+		timeStruct.tm_mon + 1,
+		timeStruct.tm_mday,
+		timeStruct.tm_hour,
+		timeStruct.tm_min,
+		timeStruct.tm_sec);
+
+	return std::string(buffer);
 }
 
 std::tm ParseToTm(System::DateTime^ data)
@@ -39,7 +43,13 @@ std::tm ParseToTm(System::DateTime^ data)
 	Date.tm_sec = data->Second;
 	return Date;
 }
-
+std::string ParseToStringorSTDSTRING(System::Object^ data)
+{
+	if (System::String^ str = dynamic_cast<System::String^>(data))
+	{
+		return msclr::interop::marshal_as<std::string>(data->ToString());
+	}
+}
 System::String^ ParseToStringorSTDSTRING(std::string data)
 {
 	System::String^ parse_data = msclr::interop::marshal_as<System::String^>(data);
@@ -223,13 +233,12 @@ std::string standardizePhoneNumberUA(const std::string& rawNumber) {
 	else if (cleanNumber.length() == 12 && cleanNumber.rfind("380", 0) != 0)
 	{
 		// Можливо, неправильний формат
-		throw Exceptions::PhoneFormatException();
 		return "Invalid Number";
-	} 
-	
+	}
+
+	// Перевірка довжини номера
 	if (cleanNumber.length() != 12)
 	{
-		throw Exceptions::PhoneFormatException();
 		return "Invalid Number";
 	}
 

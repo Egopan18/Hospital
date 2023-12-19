@@ -5,6 +5,7 @@ int AgeCalculator(User& obj, tm Date);
 //Парсинг
 std::string ParseToStringorSTDSTRING(System::Object^ data);
 std::tm ParseToTm(System::DateTime^ data);
+std::string ParseTmToString(const std::tm& timeStruct);
 System::String^ ParseToStringorSTDSTRING(std::string data);
 //Парсинг Tm в DateTime
 System::DateTime^ ConvertToDateTime(std::tm dateInfo);
